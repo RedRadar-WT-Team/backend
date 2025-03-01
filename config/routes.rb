@@ -1,3 +1,5 @@
+# config/routes.rb
+
 Rails.application.routes.draw do
-  get '/', to: '#index'
+  get '/', to: 'home#index'
 end
