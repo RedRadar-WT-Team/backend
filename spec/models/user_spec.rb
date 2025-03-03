@@ -28,6 +28,12 @@ RSpec.describe User, type: :model do
       expect(user4.errors[:zip]).to include("can't be blank")
     end
 
+    it 'is not valid with an invalid zip code format' do
+      user6 = User.new(email: 'user6@example.com', state: 'CA', zip: '1234')
+      expect(user6).to_not be_valid
+      expect(user6.errors[:zip]).to include("must be a valid 5-digit zip code")
+    end
+
     it 'is not valid with a duplicate email' do
       User.create(valid_attributes)
       user6 = User.new(valid_attributes)
