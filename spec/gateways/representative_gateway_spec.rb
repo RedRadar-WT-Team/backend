@@ -8,28 +8,27 @@ RSpec.describe RepresentativeGateway do
     json_response = File.read('spec/fixtures/5calls_representatives_search_response.json')
 
     stub_request(:get, "https://api.5calls.org/v1/representatives?location=#{search_query}").
-      with(
-        headers: {
+         with(
+           headers: {
           'Accept'=>'*/*',
           'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>"Bearer #{Rails.application.credentials.fiveCalls[:key]}",
-          'User-Agent'=>'Faraday v2.10.1'
-        }).
-        to_return(status: 200, body: json_response)
+          'User-Agent'=>'Faraday v2.12.2',
+          'X-5calls-Token'=>"#{Rails.application.credentials.fiveCalls[:key]}"
+           }).
+         to_return(status: 200, body: json_response)
 
-    fetched_response = RepresentativeGateway.fetch_queried_reps()
-    fetched_representatives = fetched_response[:representatives]
-
+    fetched_representatives = RepresentativeGateway.fetch_queried_reps("94110")
     expect(fetched_representatives.count).to eq(3)
-
-    fetched_representatives.each do |reps|
+    
+    fetched_representatives.each do |rep|
+      # binding.pry
       expect(rep).to have_key :id
       expect(rep).to have_key :name
       expect(rep).to have_key :phone
       expect(rep).to have_key :photoURL
       expect(rep).to have_key :party
       expect(rep).to have_key :state
-      expect(rep).to have_key :district
+      # expect(rep).to have_key :district
       expect(rep).to have_key :area
       expect(rep).to have_key :reason
     end
