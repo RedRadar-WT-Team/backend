@@ -1,0 +1,3 @@
+class Representative < ApplicationRecord
+  
+end
