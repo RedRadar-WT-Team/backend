@@ -25,8 +25,10 @@ RSpec.describe "representative endpoints", type: :request do
       expect(representatives.count).to eq(3)
 
       expect(representatives.first[:id]).to eq("P000197")
-
-      
     end
+  end
+
+  describe "retrieve and render reps from db" do
+    
   end
 end
