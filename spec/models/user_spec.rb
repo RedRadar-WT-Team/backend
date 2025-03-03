@@ -1,4 +1,4 @@
-# bundle exec spec/models/user_spec.rb
+# bundle exec rspec spec/models/user_spec.rb
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
 
     it 'is not valid without an email' do
       user2 = User.new(email: '', state: 'CA', zip: '90001')
-      expect(user2).to_not be_valid
+      expect(user2).to_not be_valid      
       expect(user2.errors[:email]).to include("can't be blank")
     end
 
