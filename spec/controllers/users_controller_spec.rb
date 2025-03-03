@@ -21,26 +21,33 @@ RSpec.describe UsersController, type: :controller do
         post :create, params: { user: valid_attributes }
 
         expect(response).to have_http_status(:created)
-        expect(response.body).to include('Account created successfully!')
+        message = JSON.parse(response.body)['message']
+        expect(message).to eq('Account created successfully!')
       end
     end
 
     context 'when invalid parameters are provided' do
-      let(:no_email) { { email: '', state: 'CA', zip: '90001' } }
-      let(:no_zip) { { email: 'test@example.com', state: 'CA', zip: '' } }
+      let(:no_email) { { state: 'CA', zip: '90001' } }
+      let(:no_zip) { { email: 'test@example.com', state: 'CA' } }
 
       it 'throws error when no email is provided' do
         post :create, params: { user: no_email }
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include("Email can't be blank")
+
+        error_message = JSON.parse(response.body)['errors']
+  
+        expect(error_message).to eq("Email can't be blank")
       end
 
       it 'throws error when no zip is provided' do
         post :create, params: { user: no_zip }
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include("Zip can't be blank")
+
+        error_message = JSON.parse(response.body)['errors']
+
+        expect(error_message).to eq("Zip can't be blank")
       end
     end
   end
