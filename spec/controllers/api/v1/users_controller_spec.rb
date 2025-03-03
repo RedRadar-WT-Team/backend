@@ -1,7 +1,7 @@
-# bundle exec rspec spec/controllers/users_controller_spec.rb
+# bundle exec rspec spec/controllers/api/v1/users_controller_spec.rb
 require 'rails_helper'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe Api::V1::UsersController, type: :controller do
   describe 'POST #create' do
     context 'when valid parameters are provided' do
       let(:valid_attributes) { { email: 'user@example.com', state: 'CA', zip: '90001' } }
