@@ -4,8 +4,14 @@ class RepresentativeGateway
     response = conn.get("/v1/representatives", {location: query})
 
     json = JSON.parse(response.body, symbolize_names: true)
+    district = json[:district]
+    
+    rep_data = json[:representatives].map do |rep|
+      filtered_rep = rep.slice(:id, :name, :phone, :photoURL, :party, :state, :area, :reason)
+      RepresentativePORO.new(filtered_rep, district)
+    end
 
-    json[:representatives]
+    return rep_data
   end
 
   private

@@ -1,13 +1,13 @@
 # config/routes.rb
 
 Rails.application.routes.draw do
+  root 'home#index'
+  
   namespace :api do
     namespace :v1 do
-  # post 'create_account', to: 'users#create'
+      # post 'create_account', to: 'users#create'
       resources :users, only: [:create]
-
-      # users_path
-      root 'home#index'
+      resources :representatives, only: [:index]
     end
   end
 end
