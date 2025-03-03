@@ -12,20 +12,26 @@ RSpec.describe User, type: :model do
 
     it 'is not valid without an email' do
       user2 = User.new(email: '', state: 'CA', zip: '90001')
-      expect(user2).to_not be_valid      
+      expect(user2).to_not be_valid
       expect(user2.errors[:email]).to include("can't be blank")
     end
 
-    it 'is not valid without a state' do
-      user3 = User.new(email: 'user3@example.com', state: '', zip: '90001')
+    it 'is not valid with an invalid email format' do
+      user3 = User.new(email: 'invalidemail', state: 'CA', zip: '90001')
       expect(user3).to_not be_valid
-      expect(user3.errors[:state]).to include("can't be blank")
+      expect(user3.errors[:email]).to include("is not a valid email format")
+    end
+
+    it 'is not valid without a state' do
+      user4 = User.new(email: 'user4@example.com', state: '', zip: '90001')
+      expect(user4).to_not be_valid
+      expect(user4.errors[:state]).to include("can't be blank")
     end
 
     it 'is not valid without a zip' do
-      user4 = User.new(email: 'user4@example.com', state: 'CA', zip: '')
-      expect(user4).to_not be_valid
-      expect(user4.errors[:zip]).to include("can't be blank")
+      user5 = User.new(email: 'user5@example.com', state: 'CA', zip: '')
+      expect(user5).to_not be_valid
+      expect(user5.errors[:zip]).to include("can't be blank")
     end
 
     it 'is not valid with an invalid zip code format' do
@@ -36,10 +42,9 @@ RSpec.describe User, type: :model do
 
     it 'is not valid with a duplicate email' do
       User.create(valid_attributes)
-      user6 = User.new(valid_attributes)
-
-      expect(user6).to_not be_valid
-      expect(user6.errors[:email]).to include("has already been taken")
+      user7 = User.new(valid_attributes)
+      expect(user7).to_not be_valid
+      expect(user7.errors[:email]).to include("has already been taken")
     end
   end
 
