@@ -1,6 +1,6 @@
 # config/routes.rb
 
 Rails.application.routes.draw do
-  get 'users/create'
+  post 'create_account', to: 'users#create'
   root 'home#index'
 end
