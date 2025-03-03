@@ -29,4 +29,16 @@ RSpec.describe User, type: :model do
     user.valid?
     expect(user.errors[:email]).to include('is invalid')
   end
+
+  it "is invalid with an invalid zip code" do
+    user = User.new(email: "user@example.com", state: "CA", zip: "9000")
+    expect(user).to_not be_valid
+    expect(user.errors[:zip]).to include("must be a 5-digit zip code")
+  end
+
+  it "is invalid with a non-numeric zip code" do
+    user = User.new(email: "user@example.com", state: "CA", zip: "abcde")
+    expect(user).to_not be_valid
+    expect(user.errors[:zip]).to include("must be a 5-digit zip code")
+  end
 end
