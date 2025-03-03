@@ -5,4 +5,10 @@ Rails.application.routes.draw do
   resources :users, only: [:create]
   # users_path
   root 'home#index'
+
+  namespace :api do
+    namespace :v1 do 
+      resources :representatives, only: [:index]
+    end
+  end
 end
