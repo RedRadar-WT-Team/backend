@@ -32,23 +32,6 @@ class ExecutiveOrderGateway
     end
   end
 
-  def self.find_specific_eo (document_number)
-    Rails.cache.fetch("five_most_recent", expires_in: 12.hours) do
-      executive_orders = set_query_params("api/v1/documents.json",{
-        per_page: 1, 
-        conditions: { 
-          presidential_document_type: ["executive_order"], 
-          president: ["donald-trump"],
-          publication_date: { 
-            gte: "2025-01-20"
-          }
-        }
-      })
-  
-      executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
-    end
-  end
-
   private
 
   def self.set_query_params(endpoint, parameters = {})
