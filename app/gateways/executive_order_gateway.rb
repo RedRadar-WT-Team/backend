@@ -38,8 +38,6 @@ class ExecutiveOrderGateway
       request.params = parameters
     end
 
-    binding.pry
-
     parse_data(response)
   end
   
