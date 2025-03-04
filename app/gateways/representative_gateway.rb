@@ -8,7 +8,7 @@ class RepresentativeGateway
     
     rep_data = json[:representatives].map do |rep|
       filtered_rep = rep.slice(:id, :name, :phone, :photoURL, :party, :state, :area, :reason)
-      RepresentativePORO.new(filtered_rep, district)
+      RepresentativePoro.new(filtered_rep, district)
     end
 
     return rep_data

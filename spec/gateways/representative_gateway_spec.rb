@@ -22,15 +22,15 @@ RSpec.describe RepresentativeGateway do
     expect(fetched_representatives.count).to eq(3)
     
     fetched_representatives.each do |rep|
-      expect(rep).to have_key :id
-      expect(rep).to have_key :name
-      expect(rep).to have_key :phone
-      expect(rep).to have_key :photoURL
-      expect(rep).to have_key :party
-      expect(rep).to have_key :state
-      expect(rep).to have_key :district
-      expect(rep).to have_key :area
-      expect(rep).to have_key :reason
+      expect(rep).to respond_to(:id, 
+                                :name, 
+                                :phone, 
+                                :photo_url, 
+                                :party, 
+                                :state, 
+                                :district, 
+                                :area, 
+                                :reason)
     end
   end
 end
