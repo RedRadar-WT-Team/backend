@@ -2,7 +2,6 @@
 
 Rails.application.routes.draw do
   root 'home#index'
-  
   namespace :api do
     namespace :v1 do
       # post 'create_account', to: 'users#create'
@@ -11,6 +10,11 @@ Rails.application.routes.draw do
         collection do
           get :search, action: :index
           get :details, action: :index
+        end
+      end
+      resources :executive_orders, only: [:index] do
+        collection do
+          get :recent
         end
       end
     end
