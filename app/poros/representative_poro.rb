@@ -1,4 +1,4 @@
-class RepresentativePORO
+class RepresentativePoro
 
   attr_reader :id,
               :name,
@@ -20,5 +20,11 @@ class RepresentativePORO
     @district = district
     @area = rep[:area]
     @reason = rep[:reason]
+  end
+
+  def self.find_by_id(target, reps)
+    return reps.find { |rep|
+      rep.id == target
+    } 
   end
 end
