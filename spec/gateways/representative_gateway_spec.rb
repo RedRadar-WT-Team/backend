@@ -18,6 +18,7 @@ RSpec.describe RepresentativeGateway do
          to_return(status: 200, body: json_response)
 
     fetched_representatives = RepresentativeGateway.fetch_queried_reps("94110")
+    
     expect(fetched_representatives.count).to eq(3)
     
     fetched_representatives.each do |rep|
@@ -27,7 +28,7 @@ RSpec.describe RepresentativeGateway do
       expect(rep).to have_key :photoURL
       expect(rep).to have_key :party
       expect(rep).to have_key :state
-      # expect(rep).to have_key :district
+      expect(rep).to have_key :district
       expect(rep).to have_key :area
       expect(rep).to have_key :reason
     end

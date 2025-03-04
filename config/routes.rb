@@ -2,12 +2,11 @@
 
 Rails.application.routes.draw do
   root 'home#index'
-
-  get "up" => "rails/health#show", as: 
-  :rails_health_check
-
   namespace :api do
     namespace :v1 do
+      # post 'create_account', to: 'users#create'
+      resources :users, only: [:create]
+      resources :representatives, only: [:index]
       resources :executive_orders, only: [:index]
     end
   end

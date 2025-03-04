@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_01_015615) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_03_021400) do
   create_table "executive_orders", force: :cascade do |t|
     t.string "title"
     t.string "html_url"
@@ -48,10 +48,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_01_015615) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
     t.string "email"
     t.string "state"
-    t.string "zip_code"
+    t.string "zip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

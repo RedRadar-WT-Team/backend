@@ -1,3 +1,13 @@
 class RepresentativeSerializer
+  include JSONAPI::Serializer
   
-end
+  attributes  :id,
+              :name, 
+              :phone, 
+              :photo_url, 
+              :party, 
+              :state, 
+              :district, 
+              :area, 
+              :reason
+end 

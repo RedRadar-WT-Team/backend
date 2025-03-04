@@ -15,21 +15,21 @@ class ExecutiveOrderGateway
   end
 
   # def self.current_administration_eo
-
-  #   executive_orders = set_query_params("api/v1/documents.json",{
-  #     order: "newest",
-  #     conditions: { 
-  #       presidential_document_type: ["executive_order"], 
-  #       president: ["donald-trump"],
-  #       publication_date: { 
-  #         gte: "2025-01-20"
+  #   Rails.cache.fetch("five_most_recent", expires_in: 12.hours) do
+  #     executive_orders = set_query_params("api/v1/documents.json",{
+  #       order: "newest",
+  #       conditions: { 
+  #         presidential_document_type: ["executive_order"], 
+  #         president: ["donald-trump"],
+  #         publication_date: { 
+  #           gte: "2025-01-20"
+  #         }
   #       }
-  #     }
-  #   })[:results]
-
-  #   executive_order_objects = executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
+  #     })
+  
+  #     executive_order_objects = executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
+  #   end
   # end
-
 
   private
 
@@ -37,6 +37,8 @@ class ExecutiveOrderGateway
     response = connect.get(endpoint) do |request|
       request.params = parameters
     end
+
+    binding.pry
 
     parse_data(response)
   end
