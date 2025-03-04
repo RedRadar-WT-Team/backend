@@ -7,7 +7,11 @@ Rails.application.routes.draw do
       # post 'create_account', to: 'users#create'
       resources :users, only: [:create]
       resources :representatives, only: [:index]
-      resources :executive_orders, only: [:index]
+      resources :executive_orders, only: [:index] do
+        collection do
+          get :recent
+        end
+      end
     end
   end
 end
