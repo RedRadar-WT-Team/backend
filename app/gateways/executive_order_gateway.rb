@@ -1,16 +1,17 @@
 class ExecutiveOrderGateway
   
   def self.five_most_recent
-    executive_orders = set_query_params("api/v1/documents.json",{
-      per_page: 5, 
-      order: "newest",
-      conditions: { 
-        presidential_document_type: ["executive_order"], 
-        president: ["donald-trump"] 
-      }
-    })
-
-    executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
+    Rails.cache.fetch("five_most_recent", expires_in: 12.hours) do
+      executive_orders = set_query_params("api/v1/documents.json",{
+        per_page: 5, 
+        order: "newest",
+        conditions: { 
+          presidential_document_type: ["executive_order"], 
+          president: ["donald-trump"] 
+        }
+      })
+      executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
+    end
   end
 
   # def self.current_administration_eo

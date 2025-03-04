@@ -15,7 +15,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_01_015615) do
     t.string "title"
     t.string "html_url"
     t.integer "executive_order_number"
-    t.datetime "signing_date" 
+    t.datetime "signing_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
