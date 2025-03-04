@@ -15,6 +15,8 @@ class Api::V1::ExecutiveOrdersController < ApplicationController
     render json: ExecutiveOrderSerializer.new(executive_orders)
   end
 
-
+  def show 
+    
+  end
 
 end 
