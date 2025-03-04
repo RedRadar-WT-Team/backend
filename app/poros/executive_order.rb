@@ -16,3 +16,4 @@ class ExecutiveOrder
     Date.parse(date_string).strftime("%B %d, %Y") rescue nil
   end
 end
+

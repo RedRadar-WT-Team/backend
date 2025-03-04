@@ -14,22 +14,23 @@ class ExecutiveOrderGateway
     end
   end
 
-  # def self.current_administration_eo
-  #   Rails.cache.fetch("five_most_recent", expires_in: 12.hours) do
-  #     executive_orders = set_query_params("api/v1/documents.json",{
-  #       order: "newest",
-  #       conditions: { 
-  #         presidential_document_type: ["executive_order"], 
-  #         president: ["donald-trump"],
-  #         publication_date: { 
-  #           gte: "2025-01-20"
-  #         }
-  #       }
-  #     })
+  def self.current_administration_eos
+    Rails.cache.fetch("five_most_recent", expires_in: 12.hours) do
+      executive_orders = set_query_params("api/v1/documents.json",{
+        per_page: 100, 
+        order: "newest",
+        conditions: { 
+          presidential_document_type: ["executive_order"], 
+          president: ["donald-trump"],
+          publication_date: { 
+            gte: "2025-01-20"
+          }
+        }
+      })
   
-  #     executive_order_objects = executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
-  #   end
-  # end
+      executive_order_objects = executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
+    end
+  end
 
   private
 
