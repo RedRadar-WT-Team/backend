@@ -16,7 +16,8 @@ class Api::V1::ExecutiveOrdersController < ApplicationController
   end
 
   def show 
-    
+    executive_order = ExecutiveOrderDetailGateway.find_specific_eo
+    render json: ExecutiveOrderSerializer.new(executive_order)
   end
 
 end 
