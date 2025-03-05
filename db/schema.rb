@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_03_021400) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
   create_table "executive_orders", force: :cascade do |t|
     t.string "title"
     t.string "html_url"
     t.integer "executive_order_number"
-    t.datetime "signing_date"
+    t.datetime "publication_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
