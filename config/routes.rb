@@ -17,7 +17,7 @@ Rails.application.routes.draw do
           get :recent
         end
       end
-      resources :executive_orders_users, only: [:create, :delete]
+      resources :executive_orders_users, only: [:create, :destroy]
     end
   end
 end
