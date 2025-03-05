@@ -10,9 +10,8 @@ class Api::V1::ExecutiveOrdersController < ApplicationController
   end
 
   def show 
-    document_number = params[:document_number]
+    document_number = params[:id]
     executive_order = ExecutiveOrderDetailGateway.find_specific_eo(document_number)
-    # binding.pry
     render json: ExecutiveOrderSerializer.new(executive_order)
   end
 end 
