@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :representatives, only: [:index] do
         collection do
           get :search, action: :index
-          get :details, action: :index
+          get :details, action: :show
         end
       end
       resources :executive_orders, only: [:index, :show] do

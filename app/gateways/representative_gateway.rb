@@ -5,7 +5,7 @@ class RepresentativeGateway
 
     json = JSON.parse(response.body, symbolize_names: true)
     district = json[:district]
-    
+  
     rep_data = json[:representatives].map do |rep|
       filtered_rep = rep.slice(:id, :name, :phone, :photoURL, :party, :state, :area, :reason)
       RepresentativePoro.new(filtered_rep, district)

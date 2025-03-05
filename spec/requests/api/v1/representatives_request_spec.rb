@@ -40,7 +40,7 @@ RSpec.describe "representative endpoints", type: :request do
       target_id = "P000197"
       json_response = File.read("spec/fixtures/5calls_representatives_search_response.json")
 
-      stub_request(:get, "https://api.5calls.org/v1/representatives?location").
+      stub_request(:get, "https://api.5calls.org/v1/representatives?location=#{search_query}").
          with(
            headers: {
           'Accept'=>'*/*',
@@ -50,7 +50,8 @@ RSpec.describe "representative endpoints", type: :request do
            }).
          to_return(status: 200, body: json_response)
 
-      get "/api/v1/representatives/details?db=false&location=#{search_query}&id=#{target_id}"
+      get "/api/v1/representatives/search?db=false&query=#{search_query}"
+      get "/api/v1/representatives/details?db=false&id=#{target_id}"
 
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
