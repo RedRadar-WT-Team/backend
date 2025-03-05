@@ -15,7 +15,6 @@ class Api::V1::RepresentativesController < ApplicationController
   end
     
   def show
-    binding.pry
     representatives = session[:reps]
     representative = RepresentativePoro.find_by_id(params[:id], representatives)
     render json: RepresentativeSerializer.new(representative)
