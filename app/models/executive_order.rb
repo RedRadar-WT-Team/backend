@@ -5,5 +5,5 @@ class ExecutiveOrder < ApplicationRecord
   validates :publication_date, presence: true
  
   has_many :executive_orders_users
-  has many :users, through: :executive_orders_users
+  has_many :users, through: :executive_orders_users
 end
