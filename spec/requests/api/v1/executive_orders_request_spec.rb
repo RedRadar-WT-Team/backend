@@ -41,21 +41,20 @@ RSpec.describe "Executive Orders Endpoints" , type: :request do
 
     it "can retrieve a specific executive order" do
       VCR.use_cassette("specific_executive_order_query") do
-        # document_number = "2025-03527"
-        get "/api/v1/executive_orders/2025-03527"
+        document_number = "2025-03527"
+        get "/api/v1/executive_orders/#{document_number}" 
         
         expect(response).to be_successful
         expect(response.status).to eq(200)
         
-        binding.pry
-        result = JSON.parse(response.body, symbolize_names: true)
-
-        expect(result[:attributes][:id]).to be_a(String)
-        expect(result[:attributes][:title]).to be_a(String)
-        expect(result[:attributes][:document_number]).to be_a(String)
-        expect(result[:attributes][:html_url]).to be_a(String)
-        expect(result[:attributes][:pdf_url]).to be_a(String)
-        expect(result[:attributes][:publication_date]).to be_a(String)
+        result = JSON.parse(response.body, symbolize_names: true)[:data]
+        
+        expect(result[:attributes][:id]).to eq("2025-03527")
+        expect(result[:attributes][:title]).to eq("Implementing the President's \"Department of Government Efficiency\" Cost Efficiency Initiative")
+        expect(result[:attributes][:document_number]).to eq("2025-03527")
+        expect(result[:attributes][:html_url]).to eq("https://www.federalregister.gov/documents/2025/03/03/2025-03527/implementing-the-presidents-department-of-government-efficiency-cost-efficiency-initiative")
+        expect(result[:attributes][:pdf_url]).to eq("https://www.govinfo.gov/content/pkg/FR-2025-03-03/pdf/2025-03527.pdf")
+        expect(result[:attributes][:publication_date]).to eq("March 03, 2025")
       end
     end
   end

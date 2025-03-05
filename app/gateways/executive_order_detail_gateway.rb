@@ -2,7 +2,6 @@ class ExecutiveOrderDetailGateway
   
   def self.find_specific_eo(document_number)
     Rails.cache.fetch("find_specific_eo_#{document_number}", expires_in: 12.hours) do
-      # binding.pry
       selected_executive_order = hit_endpoint("api/v1/documents/#{document_number}.json")
   
       ExecutiveOrder.new(selected_executive_order)
@@ -13,7 +12,6 @@ class ExecutiveOrderDetailGateway
 
   def self.hit_endpoint(endpoint)
     response = connect.get(endpoint)
-    binding.pry
     parse_data(response)
   end
   
