@@ -12,7 +12,7 @@ Rails.application.routes.draw do
           get :details, action: :index
         end
       end
-      resources :executive_orders, only: [:index, :show] do
+      resources :executive_orders, only: [:index, :show, :create] do
         collection do
           get :recent
         end
