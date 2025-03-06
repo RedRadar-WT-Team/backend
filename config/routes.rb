@@ -6,17 +6,18 @@ Rails.application.routes.draw do
     namespace :v1 do
       # post 'create_account', to: 'users#create'
       resources :users, only: [:create]
-      resources :representatives, only: [:index] do
+      resources :representatives, only: [:index, :show, :create] do
         collection do
           get :search, action: :index
           get :details, action: :show
         end
       end
-      resources :executive_orders, only: [:index, :show] do
+      resources :executive_orders, only: [:index, :show, :create] do
         collection do
           get :recent
         end
       end
+      resources :executive_orders_users, only: [:create, :destroy]
     end
   end
 end

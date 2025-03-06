@@ -7,7 +7,7 @@ RSpec.describe ExecutiveOrderDetailGateway do
     
       selected_executive_order = ExecutiveOrderDetailGateway.find_specific_eo(document_number)
       
-      expect(selected_executive_order).to be_an_instance_of(ExecutiveOrder)
+      expect(selected_executive_order).to be_an_instance_of(ExecutiveOrderPoro)
       expect(selected_executive_order.id).to be_a(String)
       expect(selected_executive_order.title).to be_a(String)
       expect(selected_executive_order.document_number).to be_a(String)

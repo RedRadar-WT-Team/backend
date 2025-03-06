@@ -10,7 +10,7 @@ class ExecutiveOrderGateway
           president: ["donald-trump"] 
         }
       })
-      executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
+      executive_orders.map { |executive_order| ExecutiveOrderPoro.new(executive_order)}
     end
   end
 
@@ -28,7 +28,7 @@ class ExecutiveOrderGateway
         }
       })
   
-      executive_orders.map { |executive_order| ExecutiveOrder.new(executive_order)}
+      executive_orders.map { |executive_order| ExecutiveOrderPoro.new(executive_order)}
     end
   end
 

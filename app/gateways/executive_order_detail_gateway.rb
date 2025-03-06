@@ -4,7 +4,7 @@ class ExecutiveOrderDetailGateway
     Rails.cache.fetch("find_specific_eo_#{document_number}", expires_in: 12.hours) do
       selected_executive_order = hit_endpoint("api/v1/documents/#{document_number}.json")
   
-      ExecutiveOrder.new(selected_executive_order)
+      ExecutiveOrderPoro.new(selected_executive_order)
     end
   end
 
