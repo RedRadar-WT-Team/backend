@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:create, :update]
+      resources :users, only: [:show, :create, :update]
       resources :representatives, only: [:index, :show, :create] do
         collection do
           get :search, action: :index

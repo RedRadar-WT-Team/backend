@@ -96,4 +96,33 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
     end
   end
+
+  describe 'login process' do
+    before do 
+      @user = create(:user)
+      @user2 = create(:user)
+      session[:current_user_email] = @user.email
+    end
+
+    it 'assigns current user' do 
+      get :show, params: { id: @user.id }
+
+      expect(response).to have_http_status(:ok)
+
+      expect(controller.current_user).to eq(@user)
+    end
+
+    describe 'sad paths' do
+      it 'redirects to login page with a flash message' do 
+        session[:current_user_email] = nil
+        get :show, params: { id: @user.id}
+
+        json_response = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_response[:error]).to eq("You must be logged in to access your profile.")
+      end
+    end
+  end
+
 end

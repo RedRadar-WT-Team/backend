@@ -13,9 +13,9 @@ class Api::V1::UsersController < ApplicationController
   def show
     if logged_in?
       @user = current_user
+      render json: @user
     else
-      flash[:alert] = "You must be logged in to access your profile."
-      redirect_to login_path
+      render json: { error: "You must be logged in to access your profile." }, status: :unauthorized
     end
   end
 
