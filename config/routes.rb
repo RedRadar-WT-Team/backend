@@ -9,14 +9,15 @@ Rails.application.routes.draw do
       resources :representatives, only: [:index, :show, :create] do
         collection do
           get :search, action: :index
-          get :details, action: :index
+          get :details, action: :show
         end
       end
-      resources :executive_orders, only: [:index] do
+      resources :executive_orders, only: [:index, :show, :create] do
         collection do
           get :recent
         end
       end
+      resources :executive_orders_users, only: [:create, :destroy]
     end
   end
 end
