@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :set_current_user
+  before_action :set_current_user, only: [:update]
   def create
     user = User.new(user_params)
 
@@ -23,7 +23,7 @@ class Api::V1::UsersController < ApplicationController
     if @current_user.update(user_params)
       render json: { message: 'Account updated successfully!', data: @current_user }, status: :ok
     else
-      render json: { errors: user.errors.full_messages.join(", ") }, status: :unprocessable_entity
+      render json: { errors: @current_user.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
