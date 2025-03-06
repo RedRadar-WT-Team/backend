@@ -82,5 +82,15 @@ RSpec.describe 'PATCH /api/v1/users', type: :request do
       expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response[:errors]).to eq("Zip must be a valid 5-digit zip code")
     end
+
+    it 'returns a 404 error when user is not found' do
+      invalid_user_id = 9999
+
+      patch "/api/v1/users/#{invalid_user_id}", params: { user: { email: 'newemail3@example.com' } }.to_json, headers: @headers
+      json_response = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to have_http_status(404)
+      expect(json_response[:error]).to eq("User not found")
+    end
   end
 end

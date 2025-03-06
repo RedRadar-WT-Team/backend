@@ -32,6 +32,7 @@ class Api::V1::UsersController < ApplicationController
     @current_user = User.find_by(id: params[:id])
     if !@current_user
       render json: { error: 'User not found' }, status: :not_found
+      return
     end
   end
 
