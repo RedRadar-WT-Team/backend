@@ -21,7 +21,7 @@ class Api::V1::UsersController < ApplicationController
 
   def update
     if @current_user.update(user_params)
-      render json: { message: 'Account updated successfully!', data: user }, status: :ok
+      render json: { message: 'Account updated successfully!', data: @current_user }, status: :ok
     else
       render json: { errors: user.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
@@ -29,7 +29,10 @@ class Api::V1::UsersController < ApplicationController
 
   private 
   def set_current_user
-    @current_user = User.find_by(email: )
+    @current_user = User.find_by(id: params[:id])
+    if !@current_user
+      render json: { error: 'User not found' }, status: :not_found
+    end
   end
 
   def user_params

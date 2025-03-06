@@ -16,16 +16,27 @@ RSpec.describe 'PATCH /api/v1/users', type: :request do
 
   let(:empty_state) { { state: '' } }
 
+  before do
+    # this mocks controller behavior to avoid having an actual login flow
+    allow(controller).to receive(:current_user).and_return(user)
+  end 
+
   it 'updates the user profile successfully' do
-    patch "/api/v1/users/#{user.id}", params: valid_input, headers: { 'Content-Type' => 'application/json' }
+    # simulate user session for the request
+    headers = { 'Content-Type' => 'application/json', 'X-User-Id' => user.id.to_s }
+
+    valid_params = valid_input.to_json
+    
+    patch "/api/v1/users/#{user.id}", params: valid_params, headers: headers
 
     expect(response).to have_http_status(:ok)
 
     json_response = JSON.parse(response.body, symbolize_names: true)
 
-    expect(json_response[:data][:attributes][:email]).to eq('newemail@example.com')
-    expect(json_response[:data][:attributes][:state]).to eq('NY')
-    expect(json_response[:data][:attributes][:zip]).to eq('10001')
+    expect(json_response[:message]).to eq("Account updated successfully!")
+    expect(json_response[:data][:email]).to eq('newemail@example.com')
+    expect(json_response[:data][:state]).to eq('NY')
+    expect(json_response[:data][:zip]).to eq('10001')
   end
 
   it 'returns an error when fields are missing' do
