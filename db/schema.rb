@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
+
   create_table "executive_orders", force: :cascade do |t|
     t.string "title"
     t.string "html_url"
@@ -21,8 +22,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
   end
 
   create_table "executive_orders_users", id: false, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "executive_order_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "executive_order_id", null: false
     t.index ["executive_order_id", "user_id"], name: "index_executive_orders_users_on_executive_order_id_and_user_id"
     t.index ["user_id", "executive_order_id"], name: "index_executive_orders_users_on_user_id_and_executive_order_id", unique: true
   end
@@ -41,8 +42,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
   end
 
   create_table "representatives_users", id: false, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "representative_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "representative_id", null: false
     t.index ["representative_id", "user_id"], name: "index_representatives_users_on_representative_id_and_user_id"
     t.index ["user_id", "representative_id"], name: "index_representatives_users_on_user_id_and_representative_id", unique: true
   end
