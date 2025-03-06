@@ -2,6 +2,7 @@ class Api::V1::RepresentativesController < ApplicationController
   def index
     if params[:db].present? && params[:db] == true
       representatives = Representative.all
+      render json: RepresentativeSerializer.new(representatives)
     else
       representatives = RepresentativeGateway.fetch_queried_reps(params[:query])
       render json: RepresentativeSerializer.new(representatives)
