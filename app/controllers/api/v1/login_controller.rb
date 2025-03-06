@@ -6,7 +6,7 @@ class LoginsController < ApplicationController
     if user
       # Store the user's email in the session
       session[:current_user_email] = user.email
-      redirect_to dashboard_path # Redirect to a page where user can view their profile
+      redirect_to user_profile_path # Redirect to a page where user can view their profile
     else
       # If user is not found, show an error
       flash[:alert] = "User not found"
