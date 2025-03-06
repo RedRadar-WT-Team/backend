@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :user do
     email { Faker::Internet.email }
     state { Faker::Address.state }
-    zipcode { Faker::Address.zip_code }
+    zip { Faker::Number.number(digits: 5) }
   end
 end

@@ -4,8 +4,7 @@ Rails.application.routes.draw do
   root 'home#index'
   namespace :api do
     namespace :v1 do
-      # post 'create_account', to: 'users#create'
-      resources :users, only: [:create]
+      resources :users, only: [:create, :update]
       resources :representatives, only: [:index, :show, :create] do
         collection do
           get :search, action: :index

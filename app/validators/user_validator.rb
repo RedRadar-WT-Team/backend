@@ -1,4 +1,5 @@
 # app/validators/user_validator.rb
+# 
 class UserValidator < ActiveModel::Validator
   def validate(record)
     if record.email.blank?

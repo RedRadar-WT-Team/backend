@@ -1,4 +1,5 @@
 class Api::V1::UsersController < ApplicationController
+  before_action :set_current_user
   def create
     user = User.new(user_params)
 
@@ -9,7 +10,18 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def update
+    if @current_user.update(user_params)
+      render json: { message: 'Account updated successfully!', data: user }, status: :ok
+    else
+      render json: { errors: user.errors.full_messages.join(", ") }, status: :unprocessable_entity
+    end
+  end
+
   private 
+  def set_current_user
+    @current_user = User.find_by(email: )
+  end
 
   def user_params
     params.require(:user).permit(:email, :state, :zip)
