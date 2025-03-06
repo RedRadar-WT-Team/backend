@@ -10,6 +10,15 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def show
+    if logged_in?
+      @user = current_user
+    else
+      flash[:alert] = "You must be logged in to access your profile."
+      redirect_to login_path
+    end
+  end
+
   def update
     if @current_user.update(user_params)
       render json: { message: 'Account updated successfully!', data: user }, status: :ok
