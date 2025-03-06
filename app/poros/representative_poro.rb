@@ -8,9 +8,10 @@ class RepresentativePoro
               :state,
               :district,
               :area,
-              :reason
+              :reason,
+              :location
 
-  def initialize(rep, district)
+  def initialize(rep, district, query)
     @id = rep[:id]
     @name = rep[:name]
     @phone = rep[:phone]
@@ -20,6 +21,7 @@ class RepresentativePoro
     @district = district
     @area = rep[:area]
     @reason = rep[:reason]
+    @location = query
   end
 
   def self.find_by_id(target, reps)

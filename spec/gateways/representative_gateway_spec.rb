@@ -30,7 +30,8 @@ RSpec.describe RepresentativeGateway do
                                 :state, 
                                 :district, 
                                 :area, 
-                                :reason)
+                                :reason,
+                                :location)
     end
   end
 end

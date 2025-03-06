@@ -23,6 +23,7 @@ RSpec.describe "representative endpoints", type: :request do
       expect(representatives.first[:attributes][:district]).to eq("11")
       expect(representatives.first[:attributes][:area]).to eq("US House")
       expect(representatives.first[:attributes][:reason]).to eq("This is your representative in the House.")
+      expect(representatives.first[:attributes][:location]).to eq(search_query)
       end
       VCR.eject_cassette("api_queried_reps")
     end
@@ -37,7 +38,7 @@ RSpec.describe "representative endpoints", type: :request do
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
       representative = json[:data]
-      
+     
       expect(representative[:id]).to eq("P000197")
       expect(representative[:attributes][:name]).to eq("Nancy Pelosi")
       expect(representative[:attributes][:party]).to eq("Democrat")
@@ -47,6 +48,7 @@ RSpec.describe "representative endpoints", type: :request do
       expect(representative[:attributes][:district]).to eq("11")
       expect(representative[:attributes][:area]).to eq("US House")
       expect(representative[:attributes][:reason]).to eq("This is your representative in the House.")
+      expect(representative[:attributes][:location]).to eq(search_query)
       VCR.eject_cassette("api_queried_reps")
     end
   end

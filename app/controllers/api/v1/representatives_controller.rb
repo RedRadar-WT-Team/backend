@@ -7,7 +7,7 @@ class Api::V1::RepresentativesController < ApplicationController
       render json: RepresentativeSerializer.new(representatives)
     else
       representatives = RepresentativeGateway.fetch_queried_reps(allowed[:query])
-      render json: RepresentativeSerializer.new(representatives)
+      render json: RepresentativeApiSerializer.new(representatives)
     end
   end
 
@@ -15,7 +15,6 @@ class Api::V1::RepresentativesController < ApplicationController
     allowed = api_params()
 
     if allowed[:db].present? && allowed[:db] == "true"
-      # binding.pry
       representative = Representative.find_by(id: allowed[:id])
       
       if representative
@@ -26,7 +25,7 @@ class Api::V1::RepresentativesController < ApplicationController
     elsif allowed[:db].present? && allowed[:db] == "false"
       representatives = RepresentativeGateway.fetch_queried_reps(allowed[:query])
       representative = RepresentativePoro.find_by_id(allowed[:id], representatives)
-      render json: RepresentativeSerializer.new(representative)
+      render json: RepresentativeApiSerializer.new(representative)
 
     else
       render json: {error: "404 Not Found"}, status: :not_found
@@ -35,7 +34,7 @@ class Api::V1::RepresentativesController < ApplicationController
 
   def create
     representative = Representative.new(representative_params)
-
+   
     if representative.save
       render json: RepresentativeSerializer.new(representative), status: :created
     else
