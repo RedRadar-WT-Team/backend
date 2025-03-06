@@ -1,26 +1,27 @@
 class Api::V1::RepresentativesController < ApplicationController
   def index
-    if params[:db].present? && params[:db] == "true"
+    if params[:db].present? && params[:db] == true
       representatives = Representative.all
+      render json: RepresentativeSerializer.new(representatives)
     else
       representatives = RepresentativeGateway.fetch_queried_reps(params[:query])
-      session[:reps] = representatives
-      # if params[:id].present?
-      #   representative = RepresentativePoro.find_by_id(params[:id], representatives)
-      #   render json: RepresentativeSerializer.new(representative)
-      # else
       render json: RepresentativeSerializer.new(representatives)
-      # end
     end
   end
 
   def show
-    representative = Representative.find_by(id: params[:id])
-    
-    if representative
-      render json: RepresentativeSerializer.new(representative)
+    if params[:db].present? && params[:db] == true
+      representative = Representative.find_by(id: params[:id])
+      
+      if representative
+        render json: RepresentativeSerializer.new(representative)
+      else
+        render json: { error: "Representative not found" }, status: :not_found
+      end
     else
-      render json: { error: "Representative not found" }, status: :not_found
+      representatives = RepresentativeGateway.fetch_queried_reps(params[:query])
+      representative = RepresentativePORO.find_by_id(params[:id])
+      render json: RepresentativeSerializer.new(representatives)
     end
   end
 

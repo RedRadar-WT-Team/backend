@@ -50,8 +50,7 @@ RSpec.describe "representative endpoints", type: :request do
            }).
          to_return(status: 200, body: json_response)
 
-      get "/api/v1/representatives/search?db=false&query=#{search_query}"
-      get "/api/v1/representatives/details?db=false&id=#{target_id}"
+      get "/api/v1/representatives/details?db=false&query=#{search_query}&id=#{target_id}"
 
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
