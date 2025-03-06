@@ -3,27 +3,17 @@ require "rails_helper"
 RSpec.describe "representative endpoints", type: :request do 
   describe "api queried reps" do
     it "can render list of reps from api" do
+      VCR.use_cassette("api_queried_reps") do
       search_query = "94110"
-      json_response = File.read('spec/fixtures/5calls_representatives_search_response.json')
-
-      stub_request(:get, "https://api.5calls.org/v1/representatives?location=#{search_query}").
-         with(
-           headers: {
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'User-Agent'=>'Faraday v2.12.2',
-            'X-5calls-Token'=>"#{Rails.application.credentials.fiveCalls[:key]}"
-           }).
-         to_return(status: 200, body: json_response)
 
       get "/api/v1/representatives/search?db=false&query=#{search_query}"
-
+   
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
 
       representatives = json[:data]
       expect(representatives.count).to eq(3)
-    
+      
       expect(representatives.first[:id]).to eq("P000197")
       expect(representatives.first[:attributes][:name]).to eq("Nancy Pelosi")
       expect(representatives.first[:attributes][:party]).to eq("Democrat")
@@ -33,29 +23,21 @@ RSpec.describe "representative endpoints", type: :request do
       expect(representatives.first[:attributes][:district]).to eq("11")
       expect(representatives.first[:attributes][:area]).to eq("US House")
       expect(representatives.first[:attributes][:reason]).to eq("This is your representative in the House.")
+      end
+      VCR.eject_cassette("api_queried_reps")
     end
 
     it "can retrieve one representative out of a list of reps from the api by id" do
+      VCR.insert_cassette("api_queried_reps")
       search_query = "94110"
       target_id = "P000197"
-      json_response = File.read("spec/fixtures/5calls_representatives_search_response.json")
-
-      stub_request(:get, "https://api.5calls.org/v1/representatives?location=#{search_query}").
-         with(
-           headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent'=>'Faraday v2.12.2',
-          'X-5calls-Token'=>"#{Rails.application.credentials.fiveCalls[:key]}"
-           }).
-         to_return(status: 200, body: json_response)
 
       get "/api/v1/representatives/details?db=false&query=#{search_query}&id=#{target_id}"
 
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
       representative = json[:data]
-
+      
       expect(representative[:id]).to eq("P000197")
       expect(representative[:attributes][:name]).to eq("Nancy Pelosi")
       expect(representative[:attributes][:party]).to eq("Democrat")
@@ -65,6 +47,7 @@ RSpec.describe "representative endpoints", type: :request do
       expect(representative[:attributes][:district]).to eq("11")
       expect(representative[:attributes][:area]).to eq("US House")
       expect(representative[:attributes][:reason]).to eq("This is your representative in the House.")
+      VCR.eject_cassette("api_queried_reps")
     end
   end
 
@@ -104,7 +87,18 @@ RSpec.describe "representative endpoints", type: :request do
       )
     end
 
+    before(:each) do
+      VCR.turn_off!
+      WebMock.disable!
+    end
+
+    after(:each) do
+      VCR.turn_on!
+      WebMock.enable!
+    end
+
     it "can render list of reps from db" do
+      
       get "/api/v1/representatives?db=true"
 
       expect(response).to be_successful
@@ -142,7 +136,7 @@ RSpec.describe "representative endpoints", type: :request do
     end
 
     it "can render rep searched by id in db" do
-      get "/api/v1/representatives/#{@rep1.id}"
+      get "/api/v1/representatives/#{@rep1.id}?db=true"
 
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
@@ -155,7 +149,7 @@ RSpec.describe "representative endpoints", type: :request do
       expect(json[:data][:attributes][:area]).to eq("US House")
       expect(json[:data][:attributes][:reason]).to eq("This is your representative in the House.")
 
-      get "/api/v1/representatives/#{@rep3.id}"
+      get "/api/v1/representatives/#{@rep3.id}?db=true"
 
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
@@ -170,7 +164,7 @@ RSpec.describe "representative endpoints", type: :request do
     end
 
     it "returns a 404 error when rep id is not found" do
-      get "/api/v1/representatives/999999"
+      get "/api/v1/representatives/999999?db=true"
     
       expect(response.status).to eq(404)
       json = JSON.parse(response.body, symbolize_names: true)
