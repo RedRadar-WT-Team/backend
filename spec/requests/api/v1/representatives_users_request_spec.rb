@@ -4,19 +4,10 @@ RSpec.describe "Representative Users Endpoints" , type: :request do
     it "can save a representative to the joins table of users and executive orders" do
       user = User.create!(email: "funtimes@wtf.com", state: "Canada", zip: "11111")
 
-      rep_data = Representative.create!(
-        name: "jimmy", 
-        phone: "873-456-8954", 
-        photo_url: "https://theplanetd.com/beautiful-places-in-the-world/", 
-        party: "democrat", 
-        state: "MN", 
-        district: "US House", 
-        area: "55448", 
-        reason: "cheese"
-      )
+      rep_id = "P000197"
 
-      post "/api/v1/representatives_users", params: { representative: rep_data }
-      
+      post "/api/v1/representatives_users", params: { id: rep_id, query: "94110", user_id: "1" }
+      # binding.pry
       expect(response).to be_successful
       expect(response.status).to eq(201)
 
