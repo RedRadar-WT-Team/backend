@@ -8,7 +8,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post '/login', to: 'login#create'  # log in
+      delete '/logout', to: 'login#destroy'  # log out
+
       resources :users, only: [:show, :create, :update]
+
       resources :representatives, only: [:index, :show, :create] do
         collection do
           get :search, action: :index

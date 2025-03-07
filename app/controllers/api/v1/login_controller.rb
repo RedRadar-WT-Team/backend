@@ -1,4 +1,4 @@
-class LoginsController < ApplicationController
+class Api::V1::LoginController < ApplicationController
   # "Create" a login, aka "log the user in"
   def create
     user = User.find_by(email: params[:email]) # Look for the user by email
@@ -9,14 +9,13 @@ class LoginsController < ApplicationController
       redirect_to user_profile_path # Redirect to a page where user can view their profile
     else
       # If user is not found, show an error
-      flash[:alert] = "User not found"
-      redirect_to login_path # Redirect to login page
+      render json: { error: 'User not found' }, status: :not_found
     end
   end
 
   def destroy
-    # Remove the user's email from the session to log them out
-    session[:current_user_email] = nil
-    redirect_to login_path # Redirect back to the login page
+    # Clear the session to log the user out
+    session.delete(:current_user_email)
+    render json: { message: 'Logged out successfully.' }, status: :ok
   end
 end
