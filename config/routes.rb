@@ -5,11 +5,15 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post '/login', to: 'sessions#create'  # log in
-      delete '/logout', to: 'sessions#destroy'  # log out
-      get '/profile', to: 'users#show'
+      get '/profile', to: 'users#show', as: 'user_profile'
+      # post '/login', to: 'login#create'  # log in
+      # delete '/logout', to: 'login#destroy'  # log out
+      # get '/status', to: 'login#status'
 
-      resources :users, only: [:index, :show, :create, :update, :edit] do
+      resources :users, only: [:index, :show, :create, :update] do
+        collection do
+          get :by_email
+        end
       end
 
       resources :representatives, only: [:index, :show, :create] do
