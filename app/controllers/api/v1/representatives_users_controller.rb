@@ -1,24 +1,27 @@
 class Api::V1::RepresentativesUsersController < ApplicationController
+  # before_action :set_gateway
+
   def create
+    allowed = api_params()
 
-    query = params[:query]
-    representative_id = params[:id]
-    user_id = params[:user_id]
+    query = allowed[:query]
+    representative_id = allowed[:id]
+    user_id = allowed[:user_id]
 
-    representatives = RepresentativeGateway.fetch_queried_reps(allowed[:query])
-
+    representatives = FetchRepresentativesService.call(allowed[:query])
+    binding.pry
     selected_representative = RepresentativePoro.find_by_id(representative_id, representatives)
 
     representative = Representative.find_or_create_by(
       name: selected_representative.name,
       state: selected_representative.state,
     ) do |rep|
-      rep.phone = representative_poro.phone
-      rep.photo_url = representative_poro.photo_url
-      rep.party = representative_poro.party
-      rep.district = representative_poro.district
-      rep.area = representative_poro.area
-      rep.reason = representative_poro.reason
+      rep.phone = selected_representative.phone
+      rep.photo_url = selected_representative.photo_url
+      rep.party = selected_representative.party
+      rep.district = selected_representative.district
+      rep.area = selected_representative.area
+      rep.reason = selected_representative.reason
     end
 
     begin
@@ -34,6 +37,18 @@ class Api::V1::RepresentativesUsersController < ApplicationController
   rescue 
     render json: { success: false, error: "NOOOOOOO" }, status: :bad_request
   end
+
+  private
+  
+  def api_params
+      params.permit(:id, :query, :user_id)
+  end
+
+  def set_gateway
+    @rep_gateway = RepresentativeGateway.new
+    binding.pry
+  end
+
 end
 
 
