@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :set_current_user, only: [:update]
-  before_action :ensure_logged_in, only: [:show, :update]
+  # before_action :set_current_user, only: [:update]
+  # before_action :ensure_logged_in, only: [:show, :update]
 
   def create
     user = User.new(user_params)
@@ -13,7 +13,8 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    render json: @current_user
+    user = User.find_by(email: params[:email])
+    render json: UserSerializer.new(user)
   end
 
   def update
@@ -26,12 +27,12 @@ class Api::V1::UsersController < ApplicationController
 
   private
 
-  def ensure_logged_in
-    unless logged_in?
-      render json: { error: "You must be logged in to access your profile." }, status: :unauthorized
-      return
-    end
-  end
+  # def ensure_logged_in
+  #   unless logged_in?
+  #     render json: { error: "You must be logged in to access your profile." }, status: :unauthorized
+  #     return
+  #   end
+  # end
 
   def set_current_user
     @current_user = User.find_by(id: params[:id])

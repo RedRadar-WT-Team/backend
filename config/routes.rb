@@ -8,11 +8,15 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post '/login', to: 'login#create'  # log in
-      delete '/logout', to: 'login#destroy'  # log out
-      get '/status', to: 'login#status'
+      # post '/login', to: 'login#create'  # log in
+      # delete '/logout', to: 'login#destroy'  # log out
+      # get '/status', to: 'login#status'
 
-      resources :users, only: [:show, :create, :update]
+      resources :users, only: [:index, :show, :create, :update] do
+        collection do
+          get :logIn, action: :show
+        end
+      end
 
       resources :representatives, only: [:index, :show, :create] do
         collection do
@@ -26,6 +30,8 @@ Rails.application.routes.draw do
         end
       end
       resources :executive_orders_users, only: [:create, :destroy]
+
+     
     end
   end
 end
