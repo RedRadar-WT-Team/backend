@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         end
       end
       resources :executive_orders_users, only: [:create, :destroy]
+      resources :representatives_users, only: [:create, :destroy]
     end
   end
 end
