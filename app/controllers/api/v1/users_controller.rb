@@ -1,8 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  # before_action :set_current_user, only: [:update]
-  # before_action :ensure_logged_in, only: [:show, :update]
 
-  def create
+  def create # create new user
     user = User.new(user_params)
 
     if user.save
@@ -12,16 +10,25 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def show
+  def show # fetch user by email and return their profile data
     user = User.find_by(email: params[:email])
     render json: UserSerializer.new(user)
   end
 
-  def update
+  def update # user that is logged in can update their information
     if @current_user.update(user_params)
       render json: { message: 'Account updated successfully!', data: @current_user }, status: :ok
     else
       render json: { error: @current_user.errors.full_messages.join(", ") }, status: :unprocessable_entity
+    end
+  end
+
+  def status #check if user is logged in (by checking the session) and return their details
+    if session[:current_user_email]
+      @user = User.find_by(email: session[:current_user_email]) # Find the user from the session
+      render json: { logged_in: true, user: @user.email  }
+    else
+      render json: { logged_in: false }
     end
   end
 

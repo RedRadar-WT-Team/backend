@@ -2,20 +2,14 @@
 
 Rails.application.routes.draw do
   root 'home#index'
-  get '/profile', to: 'users#show', as: 'user_profile'
-  # add path to login popup? 
-
 
   namespace :api do
     namespace :v1 do
-      # post '/login', to: 'login#create'  # log in
-      # delete '/logout', to: 'login#destroy'  # log out
-      # get '/status', to: 'login#status'
+      post '/login', to: 'sessions#create'  # log in
+      delete '/logout', to: 'sessions#destroy'  # log out
+      get '/profile', to: 'users#show'
 
-      resources :users, only: [:index, :show, :create, :update] do
-        collection do
-          get :logIn, action: :show
-        end
+      resources :users, only: [:index, :show, :create, :update, :edit] do
       end
 
       resources :representatives, only: [:index, :show, :create] do
