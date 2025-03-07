@@ -10,55 +10,41 @@ RSpec.describe "Representative Users Endpoints" , type: :request do
       VCR.use_cassette('fetch_representatives_service_94110') do
           post "/api/v1/representatives_users", params: { id: "P000197", query: "94110", user_id: user.id }
       end 
+       
+      expect(response).to be_successful
+      expect(response.status).to eq(201)
 
-  
-      binding.pry
+      results = JSON.parse(response.body, symbolize_names: true)[:representative]
 
-      # assert representative.count eq(1) or assert representative = nancy pelosi
-      # aseert representativesUser exist w/ the correct rep id
+      expect(Representative.count).to eq(1) 
+      representative = Representative.first
+      expect(results[:name]).to eq("Nancy Pelosi")
+      expect(results[:phone]).to eq("202-225-4965")
+      expect(results[:photo_url]).to eq("https://images.5calls.org/house/256/P000197.jpg")
+      expect(results[:party]).to eq("Democrat")
+      expect(results[:state]).to eq("CA")
+      expect(results[:district]).to eq("11")
+
+      expect(RepresentativesUser.count).to eq(1)
+      representatives_user = RepresentativesUser.first
+      expect(representatives_user.user_id).to eq(user.id)
+      expect(representatives_user.representative_id).to eq(representative.id)
+
+      
 
      
 
-      
-      # binding.pry
 
-      rep_id = "P000197"
 
-      # mock_representative = (
-      #   id: rep_id,
-      #   name: "Nancy Pelosi",
-      #   state: "CA",
-      #   phone: "123-456-7890",
-      #   photo_url: "http://example.com/photo.jpg",
-      #   party: "Democrat",
-      #   district: "12",
-      #   area: "California",
-      #   reason: "Some Reason"
-      # )
+      # assert representative.count eq(1) or assert representative = nancy pelosi
+      # aseert representativesUser exist w/ the correct rep id
    
 
-      allow(FetchRepresentativesService).to receive(:call).with("94110").and_return([mock_representative])
-      allow(RepresentativePoro).to receive(:find_by_id).with(rep_id, [mock_representative]).and_return(mock_representative)
+      # allow(FetchRepresentativesService).to receive(:call).with("94110").and_return([mock_representative])
+      # allow(RepresentativePoro).to receive(:find_by_id).with(rep_id, [mock_representative]).and_return(mock_representative)
             
-      expect(FetchRepresentativesService).to receive(:call).with("94110").and_return([mock_representative])
-
-      
-
-      puts "Response status: #{response.status}"
-      puts "Response body: #{response.body}"
-
-      json_response = JSON.parse(response.body)
-
-      expect(response).to be_successful
-      # binding.pry
-      expect(response.status).to eq(201)
-
-      # representative = Representative.find_by(name: "Jimmy Johnson", state: "MN")
-      # expect(representative).not_to be_nil
-
-      # rep_user_exists = RepresentativesUser.exists?(user_id: user.id, representative_id: representative.id)
-      # expect(rep_user).to be true
-
+      # expect(FetchRepresentativesService).to receive(:call).with("94110").and_return([mock_representative])
+   
     end
   end
 end
