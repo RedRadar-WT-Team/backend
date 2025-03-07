@@ -18,7 +18,7 @@ new_eo = [ {:title=>"Implementing the President's \"Department of Government Eff
 
 #  get all of the pdf URLs and feed those to chat
 x = new_eo.map do |eo|
-  eo.pdf_url
+  eo[:pdf_url]
  end
 
 OpenAIGateway.get_summaries(x)
