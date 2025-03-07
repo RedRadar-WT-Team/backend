@@ -2,10 +2,22 @@
 
 Rails.application.routes.draw do
   root 'home#index'
+  get '/profile', to: 'users#show', as: 'user_profile'
+  # add path to login popup? 
+
+
   namespace :api do
     namespace :v1 do
-      # post 'create_account', to: 'users#create'
-      resources :users, only: [:create]
+      # post '/login', to: 'login#create'  # log in
+      # delete '/logout', to: 'login#destroy'  # log out
+      # get '/status', to: 'login#status'
+
+      resources :users, only: [:index, :show, :create, :update] do
+        collection do
+          get :logIn, action: :show
+        end
+      end
+
       resources :representatives, only: [:index, :show, :create] do
         collection do
           get :search, action: :index
@@ -18,6 +30,8 @@ Rails.application.routes.draw do
         end
       end
       resources :executive_orders_users, only: [:create, :destroy]
+
+     
     end
   end
 end

@@ -56,7 +56,7 @@ http_interactions:
       Vary:
       - Accept-Encoding
       Age:
-      - '2693'
+      - '2692'
       Accept-Ranges:
       - bytes
     body:
