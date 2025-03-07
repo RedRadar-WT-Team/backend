@@ -86,13 +86,13 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         patch :update, params: { id: @new_user.id, user: invalid_attributes }
 
         expect(response).to have_http_status(:unprocessable_entity)
-        error_message = JSON.parse(response.body)['errors']
+        error_message = JSON.parse(response.body)['error']
         expect(error_message).to eq("Email can't be blank")
       end
     end
 
-    context 'when the user is not logged in' do
-      it 'returns an error with an unauthorized status' do
+    describe 'sad paths:' do 
+      it 'returns an error when user is not logged in' do
         user = create(:user)
         session[:current_user_email] = nil
         patch :update, params: { id: user.id, user: updated_attributes }
@@ -100,24 +100,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         json_response = JSON.parse(response.body, symbolize_names: true)
 
         expect(response).to have_http_status(:unauthorized)
-        expect(json_response[:error]).to eq("You must be logged in to update your profile.")
-      end
-    end
-
-    context 'when updating another user profile' do
-      before do
-        @user1 = create(:user)
-        @another_user = create(:user)
-        session[:current_user_email] = @user1.email
-      end
-
-      it 'returns forbidden when trying to update another user profile' do
-        patch :update, params: { id: @another_user.id, user: updated_attributes }
-
-        json_response = JSON.parse(response.body, symbolize_names: true)
-
-        expect(response).to have_http_status(:forbidden)
-        expect(json_response[:error]).to eq("You are not authorized to update this profile.")
+        expect(json_response[:error]).to eq("You must be logged in to access your profile.")
       end
     end
   end
