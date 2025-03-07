@@ -10,7 +10,7 @@ RSpec.describe "Representative Users Endpoints" , type: :request do
       VCR.use_cassette('fetch_representatives_service_94110') do
           post "/api/v1/representatives_users", params: { id: "P000197", query: "94110", user_id: user.id }
       end 
-       
+
       expect(response).to be_successful
       expect(response.status).to eq(201)
 
