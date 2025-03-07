@@ -27,6 +27,8 @@ RSpec.describe "Representative Users Endpoints" , type: :request do
       # expect(rep_user).to be true
 
     end
+  end
+end
 
     # it "can unsave a representative to the joins table users and executive orders" do
     #   user = User.create!(email: "funtimes@wtf.com", state: "Canada", zip: "11111")
@@ -40,6 +42,5 @@ RSpec.describe "Representative Users Endpoints" , type: :request do
     #   expect(response).to be_successful
     #   expect(response.status).to eq(204)
     # end
-  end
-end
 
+ 
