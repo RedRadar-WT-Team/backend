@@ -81,6 +81,8 @@ group :test do
   gem "vcr"
   gem "capybara"
   gem "selenium-webdriver"
+  gem "factory_bot_rails"
+  gem "faker"
 end
 
 gem 'simplecov', require: false, group: :test
