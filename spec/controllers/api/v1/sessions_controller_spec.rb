@@ -1,51 +1,54 @@
+# spec/controllers/api/v1/session_controller_spec.rb
+
 require 'rails_helper'
 
-RSpec.describe Api::V1::SessionsController, type: :controller do
-  let!(:user) { create(:user) }
-  let(:header) { { 'Content-Type' => 'application/json', 'X-User-Id' => user.id.to_s } }
+RSpec.describe Api::V1::SessionController, type: :controller do
+  # Updated user creation to include required fields
+  let(:user) { create(:user, email: 'testuser@example.com', state: 'California', zip: '94101') }
 
   describe 'POST #create' do
-    context 'with valid email' do
-      it 'logs in the user and stores email in session' do
-        post api_v1_login_path params: { email: user.email }.to_json, headers: header
+    context 'when user exists' do
+      it 'logs the user in and returns a success message' do
+        post api_v1_session_path, params: { email: 'testuser@example.com' }
 
-        json_response = JSON.parse(response.body)
-
-        expect(response).to have_http_status(200)
-
-        expect(json_response['message']).to eq('Logged in successfully')
-
-        expect(session[:current_user_email]).to eq(user.email)
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)['message']).to eq('Logged in successfully')
+        expect(session[:user_id]).to eq(user.id)
       end
     end
 
-    context 'with invalid email' do
-      it 'returns an error when the user is not found' do
-        post api_v1_login_path, params: { email: 'nonexistent@example.com' }.to_json, headers: header
-        json_response = JSON.parse(response.body, symbolize_names: true)
+    context 'when user does not exist' do
+      it 'returns an error message' do
+        post api_v1_session_path, params: { email: 'nonexistent@example.com' }
 
         expect(response).to have_http_status(:not_found)
-        expect(json_response[:error]).to eq('User not found')
+        expect(JSON.parse(response.body)['error']).to eq('User not found')
+        expect(session[:current_user_id]).to be_nil
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    it 'logs out the user and clears the session' do
-      session[:current_user_email] = user.email
+    context 'when user is logged in' do
+      before { session[:user_id] = user.id }
 
-      delete api_v1_logout_path
+      it 'logs the user out and returns a success message' do
+        delete api_v1_session_path
 
-      json_response = JSON.parse(response.body, symbolize_names: true)
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)['message']).to eq('Logged out successfully.')
+        expect(session[:user_id]).to be_nil
+      end
+    end
 
-      expect(session[:current_user_email]).to be_nil
+    context 'when no user is logged in' do
+      it 'still returns a success message but does not affect session' do
+        delete api_v1_session_path
 
-
-      expect(response).to have_http_status(:ok)
-      expect(json_response[:message]).to eq('Logged out successfully.')
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)['message']).to eq('Logged out successfully.')
+        expect(session[:user_id]).to be_nil
+      end
     end
   end
 end
-#        Prefix Verb   URI Pattern              Controller#Action
-#  api_v1_login POST   /api/v1/login(.:format)  api/v1/sessions#create
-#  api_v1_logout DELETE /api/v1/logout(.:format) api/v1/sessions#destroy

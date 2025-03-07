@@ -6,9 +6,6 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/profile', to: 'users#show', as: 'user_profile'
-      # post '/login', to: 'login#create'  # log in
-      # delete '/logout', to: 'login#destroy'  # log out
-      # get '/status', to: 'login#status'
 
       resources :users, only: [:index, :show, :create, :update] do
         collection do
@@ -29,6 +26,7 @@ Rails.application.routes.draw do
       end
       resources :executive_orders_users, only: [:create, :destroy]
       resources :representatives_users, only: [:create, :destroy]
+      resources :session, only: [:create, :destroy]
     end
   end
 end

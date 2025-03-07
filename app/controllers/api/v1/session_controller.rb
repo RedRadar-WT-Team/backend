@@ -1,13 +1,15 @@
-# app/controllers/api/v1/sessions_controller.rb
+# app/controllers/api/v1/session_controller.rb
 # 
-class Api::V1::SessionsController < ApplicationController
+class Api::V1::SessionController < ApplicationController
 
   def create #log user in by finding user via email and storing email in session
+    logger.debug "Params: #{params.inspect}"
+
     @user = User.find_by(email: params[:email]) # Look for the user by email
 
     if @user
       # Store the user's email in the session
-      session[:current_user_id] = @user.id
+      session[:user_id] = @user.id
       render json: { message: 'Logged in successfully' }, status: :ok  # Return JSON response to frontend
     else
       # If user is not found, show an error
@@ -16,7 +18,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def destroy # Clear the session to log the user out
-    session[:current_user_id] = nil
+    session[:user_id] = nil
     render json: { message: 'Logged out successfully.' }, status: :ok
   end
 end
