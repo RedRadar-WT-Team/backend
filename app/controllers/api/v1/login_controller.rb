@@ -18,4 +18,13 @@ class Api::V1::LoginController < ApplicationController
     session.delete(:current_user_email)
     render json: { message: 'Logged out successfully.' }, status: :ok
   end
+
+  def status
+    if session[:current_user_email]
+      user = User.find_by(email: session[:current_user_email]) # Find the user from the session
+      render json: { logged_in: true, user: { name: user.name, email: user.email } }
+    else
+      render json: { logged_in: false }
+    end
+  end
 end
