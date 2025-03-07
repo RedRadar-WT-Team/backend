@@ -1,0 +1,81 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.federalregister.gov/api/v1/documents.json?conditions%5Bpresident%5D%5B0%5D=donald-trump&conditions%5Bpresidential_document_type%5D%5B0%5D=executive_order&order=newest&per_page=5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.12.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 06 Mar 2025 22:53:05 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '4696'
+      Connection:
+      - keep-alive
+      Status:
+      - 200 OK
+      Access-Control-Allow-Origin:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Request-Id:
+      - Root1-67ca1088-4876ab2777e606b76a656a9f
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - DENY
+      X-Runtime:
+      - '0.049105'
+      X-Content-Type-Options:
+      - nosniff
+      Content-Security-Policy:
+      - 'default-src ''self'' https:; font-src ''self'' https: data:; img-src ''self''
+        https: data: ''report-sample''; object-src ''none''; script-src ''self'' https:
+        ''report-sample''; style-src ''self'' https: ''report-sample'' ''unsafe-inline'';
+        report-uri https://api.honeybadger.io/v1/browser/csp?api_key=hbp_LAOWxDuK8xdllLjKAEKuStZNwPe8dE0uCkBF&env=production&report_only=false&context%5Bcsp_version%5D=2'
+      Vary:
+      - Accept-Encoding
+      Age:
+      - '5832'
+      Accept-Ranges:
+      - bytes
+    body:
+      encoding: ASCII-8BIT
+      string: '{"count":302,"description":"Documents signed by Donald Trump and of
+        presidential document type Executive Order","total_pages":50,"next_page_url":"https://www.federalregister.gov/api/v1/documents?conditions%5Bpresident%5D%5B%5D=donald-trump&conditions%5Bpresidential_document_type%5D%5B%5D=executive_order&format=json&order=newest&page=2&per_page=5","results":[{"title":"Amendment
+        to Duties To Address the Situation at Our Southern Border","type":"Presidential
+        Document","abstract":null,"document_number":"2025-03729","html_url":"https://www.federalregister.gov/documents/2025/03/06/2025-03729/amendment-to-duties-to-address-the-situation-at-our-southern-border","pdf_url":"https://www.govinfo.gov/content/pkg/FR-2025-03-06/pdf/2025-03729.pdf","public_inspection_pdf_url":"https://public-inspection.federalregister.gov/2025-03729.pdf?1741182316","publication_date":"2025-03-06","agencies":[{"raw_name":"EXECUTIVE
+        OFFICE OF THE PRESIDENT","name":"Executive Office of the President","id":538,"url":"https://www.federalregister.gov/agencies/executive-office-of-the-president","json_url":"https://www.federalregister.gov/api/v1/agencies/538","parent_id":null,"slug":"executive-office-of-the-president"}],"excerpts":null},{"title":"Amendment
+        to Duties To Address the Flow of Illicit Drugs Across Our Northern Border","type":"Presidential
+        Document","abstract":null,"document_number":"2025-03728","html_url":"https://www.federalregister.gov/documents/2025/03/06/2025-03728/amendment-to-duties-to-address-the-flow-of-illicit-drugs-across-our-northern-border","pdf_url":"https://www.govinfo.gov/content/pkg/FR-2025-03-06/pdf/2025-03728.pdf","public_inspection_pdf_url":"https://public-inspection.federalregister.gov/2025-03728.pdf?1741182316","publication_date":"2025-03-06","agencies":[{"raw_name":"EXECUTIVE
+        OFFICE OF THE PRESIDENT","name":"Executive Office of the President","id":538,"url":"https://www.federalregister.gov/agencies/executive-office-of-the-president","json_url":"https://www.federalregister.gov/api/v1/agencies/538","parent_id":null,"slug":"executive-office-of-the-president"}],"excerpts":null},{"title":"Immediate
+        Expansion of American Timber Production","type":"Presidential Document","abstract":null,"document_number":"2025-03695","html_url":"https://www.federalregister.gov/documents/2025/03/06/2025-03695/immediate-expansion-of-american-timber-production","pdf_url":"https://www.govinfo.gov/content/pkg/FR-2025-03-06/pdf/2025-03695.pdf","public_inspection_pdf_url":"https://public-inspection.federalregister.gov/2025-03695.pdf?1741182316","publication_date":"2025-03-06","agencies":[{"raw_name":"EXECUTIVE
+        OFFICE OF THE PRESIDENT","name":"Executive Office of the President","id":538,"url":"https://www.federalregister.gov/agencies/executive-office-of-the-president","json_url":"https://www.federalregister.gov/api/v1/agencies/538","parent_id":null,"slug":"executive-office-of-the-president"}],"excerpts":null},{"title":"Designating
+        English as the Official Language of the United States","type":"Presidential
+        Document","abstract":null,"document_number":"2025-03694","html_url":"https://www.federalregister.gov/documents/2025/03/06/2025-03694/designating-english-as-the-official-language-of-the-united-states","pdf_url":"https://www.govinfo.gov/content/pkg/FR-2025-03-06/pdf/2025-03694.pdf","public_inspection_pdf_url":"https://public-inspection.federalregister.gov/2025-03694.pdf?1741182316","publication_date":"2025-03-06","agencies":[{"raw_name":"EXECUTIVE
+        OFFICE OF THE PRESIDENT","name":"Executive Office of the President","id":538,"url":"https://www.federalregister.gov/agencies/executive-office-of-the-president","json_url":"https://www.federalregister.gov/api/v1/agencies/538","parent_id":null,"slug":"executive-office-of-the-president"}],"excerpts":null},{"title":"Addressing
+        the Threat to National Security From Imports of Timber, Lumber, and Their
+        Derivative Products","type":"Presidential Document","abstract":null,"document_number":"2025-03693","html_url":"https://www.federalregister.gov/documents/2025/03/06/2025-03693/addressing-the-threat-to-national-security-from-imports-of-timber-lumber-and-their-derivative","pdf_url":"https://www.govinfo.gov/content/pkg/FR-2025-03-06/pdf/2025-03693.pdf","public_inspection_pdf_url":"https://public-inspection.federalregister.gov/2025-03693.pdf?1741182316","publication_date":"2025-03-06","agencies":[{"raw_name":"EXECUTIVE
+        OFFICE OF THE PRESIDENT","name":"Executive Office of the President","id":538,"url":"https://www.federalregister.gov/agencies/executive-office-of-the-president","json_url":"https://www.federalregister.gov/api/v1/agencies/538","parent_id":null,"slug":"executive-office-of-the-president"}],"excerpts":null}]}'
+  recorded_at: Thu, 06 Mar 2025 22:53:05 GMT
+recorded_with: VCR 6.3.1

@@ -1,6 +1,5 @@
 class Api::V1::UsersController < ApplicationController
   before_action :set_current_user, only: [:update]
-  before_action :authorize_user, only: [:update]
   before_action :ensure_logged_in, only: [:show, :update]
 
   def create
@@ -38,13 +37,6 @@ class Api::V1::UsersController < ApplicationController
     @current_user = User.find_by(id: params[:id])
     if @current_user.nil?
       render json: { error: "User not found" }, status: :not_found
-      return
-    end
-  end
-
-  def authorize_user
-    if @current_user.id != params[:id].to_i
-      render json: { error: "You are not authorized to update this profile."}, status: :unauthorized
       return
     end
   end
