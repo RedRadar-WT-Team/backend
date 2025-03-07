@@ -1,15 +1,17 @@
 class Api::V1::ExecutiveOrdersUsersController < ApplicationController
   def create
-    executive_order_number = params[:executive_order_number] 
+    executive_order_number = params[:executive_order_number]
 
     user = User.find(params[:user_id])
 
-    executive_order = ExecutiveOrder.find_by(executive_order_number: executive_order_number)
+    executive_order = ExecutiveOrder.find_or_create_from_gateway(executive_order_number: executive_order_number)
+
+    # executive_order = ExecutiveOrder.find_by(executive_order_number: executive_order_number)
     
-    if executive_order === nil 
-     found_executive_order = ExecutiveOrderDetailGateway.find_specific_eo(executive_order_number)
-     ExecutiveOrder.create!(found_executive_order)
-    end
+    # if executive_order === nil 
+    #  found_executive_order = ExecutiveOrderDetailGateway.find_specific_eo(executive_order_number)
+    #  ExecutiveOrder.create!(found_executive_order)
+    # end
 
     executive_order_user = ExecutiveOrdersUser.create!(user: user, executive_order: executive_order)
 
