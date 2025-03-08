@@ -1,4 +1,4 @@
-# app/controllers/api/v1/session_controller.rb
+# app/controllers/api/v1/sessions_controller.rb
 # 
 class Api::V1::SessionsController < ApplicationController
 

@@ -5,15 +5,15 @@ require 'rails_helper'
 RSpec.describe Api::V1::SessionsController, type: :controller do
   let(:user) { create(:user, email: 'testuser@example.com', state: 'California', zip: '94101') }
 
-  before do
-    allow_any_instance_of(ApplicationController).to receive(:session).and_return({ user_id: user.id })
-  end 
+  # before do
+  #   allow_any_instance_of(controller).to receive(:session).and_return({ current_user_id: user.id })
+  # end 
 
   describe 'POST #create' do
     context 'when user exists' do
       it 'logs the user in and returns a success message' do
-        post '/api/v1/session', params: { email: 'testuser@example.com' }, as: :json
-        binding.pry
+        post "/api/v1/session/#{user.id}", params: { email: 'testuser@example.com' }, as: :json
+
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body)['message']).to eq('Logged in successfully')
         expect(session[:user_id]).to eq(user.id)
