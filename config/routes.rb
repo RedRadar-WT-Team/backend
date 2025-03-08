@@ -5,11 +5,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-<<<<<<< HEAD
       get '/profile', to: 'users#show', as: 'user_profile'
-
-=======
->>>>>>> e505044a97628cdac2d9df349e77680ee16fea98
+      
       resources :users, only: [:index, :show, :create, :update] do
         collection do
           get :by_email
