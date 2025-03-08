@@ -9,7 +9,7 @@ class Api::V1::RepresentativesUsersController < ApplicationController
     user_id = allowed[:user_id]
 
     representatives = FetchRepresentativesService.call(allowed[:query])
-    binding.pry
+
     selected_representative = RepresentativePoro.find_by_id(representative_id, representatives)
 
     representative = Representative.find_or_create_by(
@@ -24,18 +24,28 @@ class Api::V1::RepresentativesUsersController < ApplicationController
       rep.reason = selected_representative.reason
     end
 
-    begin
-      RepresentativeUser.create!(
-        user_id: user_id, 
-        representative_id: representative.id
-      )
+    representatives_user = RepresentativesUser.find_or_initialize_by(
+      user_id: user_id, 
+       representative_id: representative.id
+    )
 
+    if representatives_user.save 
       render json: { success: true, representative: representative}, status: :created 
-    rescue
-      render json: { success: true, message: "Already saved", representative: representative }, status: :ok
+    else
+      head 500
     end
-  rescue 
-    render json: { success: false, error: "NOOOOOOO" }, status: :bad_request
+  end
+
+  def destroy
+    # representatives_user = RepresentativesUser.find(params[:id])
+    rep_user = RepresentativesUser.find_by(user_id: params[:user_id], representative_id: params[:representative_id])
+
+    
+    if rep_user.destroy
+      head :no_content
+    else
+      render json: { error: "Record not found" }, status: :not_found
+    end
   end
 
   private
@@ -46,7 +56,6 @@ class Api::V1::RepresentativesUsersController < ApplicationController
 
   def set_gateway
     @rep_gateway = RepresentativeGateway.new
-    binding.pry
   end
 
 end

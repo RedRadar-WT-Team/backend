@@ -58,4 +58,95 @@ RSpec.describe "Executive Orders Endpoints" , type: :request do
       end
     end
   end
+
+  describe "Edge Cases and Error Handling" do
+    it "returns empty data when there are no executive orders" do
+      allow(ExecutiveOrderGateway).to receive(:current_administration_eos).and_return([])
+      
+      get "/api/v1/executive_orders"
+      
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+      
+      results = JSON.parse(response.body, symbolize_names: true)[:data]
+      expect(results).to eq([])
+    end
+
+    it "returns a 404 when a non-existent executive order is requested" do
+      allow(ExecutiveOrderDetailGateway).to receive(:find_specific_eo).with("34203482305820582309528").and_return(nil)
+      
+      get "/api/v1/executive_orders/34203482305820582309528"
+      
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+      
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Executive order not found")
+    end
+
+    it "handles errors in the index action" do
+      allow(ExecutiveOrderGateway).to receive(:current_administration_eos).and_raise(StandardError.new("API Error"))
+      
+      get "/api/v1/executive_orders"
+      
+      expect(response).to_not be_successful
+      expect(response.status).to eq(500)
+      
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("API Error")
+    end
+
+    it "handles errors in the recent action" do
+      allow(ExecutiveOrderGateway).to receive(:five_most_recent).and_raise(StandardError.new("Recent API Error"))
+      
+      get "/api/v1/executive_orders/recent"
+      
+      expect(response).to_not be_successful
+      expect(response.status).to eq(500)
+      
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Recent API Error")
+    end
+
+    it "handles gateway errors gracefully" do
+      allow(ExecutiveOrderGateway).to receive(:current_administration_eos).and_raise(StandardError.new("API Error"))
+      
+      get "/api/v1/executive_orders"
+      
+      expect(response).to_not be_successful
+      expect(response.status).to eq(500)
+      
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("API Error")
+    end
+
+    it "handles exceptions during the create action" do
+      allow(ExecutiveOrder).to receive(:new).and_raise(StandardError.new("Creation failed"))
+      
+      post "/api/v1/executive_orders", params: { title: "Test Order" }
+      
+      expect(response).to_not be_successful
+      expect(response.status).to eq(500)
+      
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:error]).to eq("Creation failed")
+    end
+
+    it "handles validation errors when creating invalid executive orders" do
+      mock_eo = instance_double("ExecutiveOrder")
+      allow(ExecutiveOrder).to receive(:new).and_return(mock_eo)
+      allow(mock_eo).to receive(:save).and_return(false)
+      allow(mock_eo).to receive(:errors).and_return(
+        double(full_messages: ["Publication date can't be blank"])
+      )
+      
+      post "/api/v1/executive_orders", params: { title: "Test Order" }
+      
+      expect(response).to_not be_successful
+      expect(response.status).to eq(422)
+      
+      error = JSON.parse(response.body, symbolize_names: true)
+      expect(error[:errors]).to include("Publication date can't be blank")
+    end
+  end
 end
