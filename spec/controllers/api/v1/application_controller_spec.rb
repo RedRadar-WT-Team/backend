@@ -8,7 +8,7 @@ RSpec.describe ApplicationController, type: :controller do
 
     context 'when the user is logged in' do
       before do
-        session[:current_user_email] = user.email
+        session[:current_user_id] = user.id
       end
 
       it 'returns the current user' do
@@ -22,7 +22,7 @@ RSpec.describe ApplicationController, type: :controller do
 
     context 'when the user is not logged in' do
       before do
-        session[:current_user_email] = nil
+        session[:current_user_id] = nil
       end
 
       it 'returns nil for current_user' do

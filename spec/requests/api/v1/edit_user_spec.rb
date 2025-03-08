@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'PATCH /api/v1/users', type: :request do 
+RSpec.describe 'edit user request', type: :request do 
   let(:user) { create(:user) }
   let(:valid_update) {{ email: 'newemail@example.com', state: 'NY', zip: '10001' }}
 
@@ -12,17 +12,12 @@ RSpec.describe 'PATCH /api/v1/users', type: :request do
   let(:empty_zip) { { zip: '' } }
   let(:empty_state) { { state: '' } }
 
-  let(:headers) { { 'Content-Type' => 'application/json', 'X-User-Id' => user.id.to_s } }
-
   before do
-    # this mocks controller behavior to avoid having an actual login flow
-    allow_any_instance_of(ApplicationController).to receive(:session).and_return({ current_user_email: user.email })
-    allow(controller).to receive(:current_user).and_return(user)
+    allow_any_instance_of(ApplicationController).to receive(:session).and_return({ user_id: user.id })
   end 
 
   it 'updates the user profile successfully' do
-    # simulate user session for the request
-    patch "/api/v1/users/#{user.id}", params: valid_update.to_json, headers: headers
+    patch api_v1_user_path(user), params: valid_update, as: :json
 
     expect(response).to have_http_status(:ok)
 
@@ -40,20 +35,20 @@ RSpec.describe 'PATCH /api/v1/users', type: :request do
 
     # Test missing required fields
     it 'returns an error when fields are missing' do
-      patch "/api/v1/users/#{user.id}", params: empty_email.to_json, headers: headers
+      patch api_v1_user_path(user), params: empty_email, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
 
       expect(json_response[:error]).to eq("Email can't be blank")
 
-      patch "/api/v1/users/#{user.id}", params: empty_state.to_json, headers: headers
+      patch api_v1_user_path(user), params: empty_state, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response[:error]).to eq("State can't be blank")
 
-      patch "/api/v1/users/#{user.id}", params: empty_zip.to_json, headers: headers
+      patch api_v1_user_path(user), params: empty_zip, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
@@ -62,13 +57,13 @@ RSpec.describe 'PATCH /api/v1/users', type: :request do
 
     # Test invalid data inputs (email format, zip code)
     it 'returns an error when fields have invalid data' do
-      patch "/api/v1/users/#{user.id}", params: { email: 'bademail' }.to_json, headers: headers
+      patch api_v1_user_path(user), params: incorrect_email, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response[:error]).to eq("Email is not a valid email format")
 
-      patch "/api/v1/users/#{user.id}", params: { zip: '12' }.to_json, headers: headers
+      patch api_v1_user_path(user), params: { zip: '12' }, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
@@ -77,8 +72,10 @@ RSpec.describe 'PATCH /api/v1/users', type: :request do
 
     # Test duplicate email error
     it 'returns an error when email is already taken' do
-      user2 = create(:user, email: 'newemail@example.com')
-      patch "/api/v1/users/#{user.id}", params: { email: user2.email }.to_json, headers: headers
+      user2 = create(:user)
+
+      patch api_v1_user_path(user), params: { email: user2.email }, as: :json
+
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
@@ -87,7 +84,7 @@ RSpec.describe 'PATCH /api/v1/users', type: :request do
 
     # Test when user is not found
     it 'returns a 404 error when user is not found' do
-      patch "/api/v1/users/9999", params: { email: 'newemail@example.com' }.to_json, headers: headers
+      patch api_v1_user_path(user), params: { email: 'randomuser@example.com' }, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:not_found)

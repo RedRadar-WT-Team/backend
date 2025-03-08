@@ -1,15 +1,18 @@
-# spec/controllers/api/v1/session_controller_spec.rb
+# bundle exec rspec spec/controllers/api/v1/sessions_controller_spec.rb
 
 require 'rails_helper'
 
 RSpec.describe Api::V1::SessionController, type: :controller do
-  # Updated user creation to include required fields
   let(:user) { create(:user, email: 'testuser@example.com', state: 'California', zip: '94101') }
+
+  before do
+    allow_any_instance_of(ApplicationController).to receive(:session).and_return({ user_id: user.id })
+  end 
 
   describe 'POST #create' do
     context 'when user exists' do
       it 'logs the user in and returns a success message' do
-        post api_v1_session_path, params: { email: 'testuser@example.com' }
+        post api_v1_session_path, params: { email: 'testuser@example.com' }, as: :json
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to eq('Logged in successfully')
@@ -19,7 +22,7 @@ RSpec.describe Api::V1::SessionController, type: :controller do
 
     context 'when user does not exist' do
       it 'returns an error message' do
-        post api_v1_session_path, params: { email: 'nonexistent@example.com' }
+        post api_v1_session_path, params: { email: 'nonexistent@example.com' }, as: :json
 
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)['error']).to eq('User not found')

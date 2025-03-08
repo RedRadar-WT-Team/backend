@@ -35,13 +35,12 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'returns the user' do
         user = create(:user)
 
-        # Use the `id` instead of `email`
-        get :show, params: { id: user.id }
+        get :show, params: { email: user.email }
 
         json_response = JSON.parse(response.body, symbolize_names: true)
-
         expect(response).to have_http_status(:ok)
-        expect(json_response[:data][:id]).to eq(user.id.to_s)
+
+        expect(json_response[:data][:attributes][:email]).to eq(user.email)
       end
     end
 
@@ -57,46 +56,28 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-  context 'when valid parameters are provided' do
-    before do
-      @user = create(:user)
-      session[:current_user_email] = @user.email
-    end
+    context 'when valid parameters are provided' do
+      it 'updates the user successfully' do
+        patch api_v1_user_path(user), params: updated_attributes , as: :json
+        user.reload
 
-    it 'updates the user successfully' do
-      patch :update, params: { id: @user.id, user: updated_attributes }
-
-      json_response = JSON.parse(response.body)  # Make sure to parse the response
-
-      expect(response).to have_http_status(:ok)
-      expect(json_response['message']).to eq('Account updated successfully!')
-      expect(json_response['data']['email']).to eq(updated_attributes[:email])
-      expect(json_response['data']['state']).to eq(updated_attributes[:state])
-      expect(json_response['data']['zip']).to eq(updated_attributes[:zip])
-    end
-  end
-end
-
-  describe 'GET #by_email' do
-    context 'when user exists for the given email' do
-      it 'returns the user data' do
-        request.headers['X-User-Email'] = user.email
-        get :by_email
+        json_response = JSON.parse(response.body)  
 
         expect(response).to have_http_status(:ok)
-        json_response = JSON.parse(response.body)
-        expect(json_response['email']).to eq(user.email)
+        expect(json_response['message']).to eq('Account updated successfully!')
+        expect(json_response['data']['email']).to eq('user@example.com')
+        expect(json_response['data']['state']).to eq('CA')
+        expect(json_response['data']['zip']).to eq('90001')
+        binding.pry
       end
     end
 
-    context 'when user does not exist for the given email' do
-      it 'returns an error message' do
-        request.headers['X-User-Email'] = 'nonexistent@email.com'
-        get :by_email
+    context 'when invalid parameters are provided' do
+      it 'returns an error message and does not update' do
+        patch api_v1_user_path(user), params: invalid_attributes,  as: :json
 
-        expect(response).to have_http_status(:not_found)
-        json_response = JSON.parse(response.body)
-        expect(json_response['error']).to eq('User not found')
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(JSON.parse(response.body)['error']).to include("State can't be blank")
       end
     end
   end

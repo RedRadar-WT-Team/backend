@@ -26,7 +26,7 @@ Rails.application.routes.draw do
       end
       resources :executive_orders_users, only: [:create, :destroy]
       resources :representatives_users, only: [:create, :destroy]
-      resources :session, only: [:create, :destroy]
+      resource :session, only: [:create, :destroy]
     end
   end
 end

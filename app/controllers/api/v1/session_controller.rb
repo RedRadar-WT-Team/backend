@@ -3,8 +3,6 @@
 class Api::V1::SessionController < ApplicationController
 
   def create #log user in by finding user via email and storing email in session
-    logger.debug "Params: #{params.inspect}"
-
     @user = User.find_by(email: params[:email]) # Look for the user by email
 
     if @user
