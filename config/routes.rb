@@ -6,11 +6,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get '/profile', to: 'users#show', as: 'user_profile'
-      # post '/login', to: 'login#create'  # log in
-      # delete '/logout', to: 'login#destroy'  # log out
-      # get '/status', to: 'login#status'
-
       resources :users, only: [:index, :show, :create, :update] do
         collection do
           get :by_email
@@ -28,8 +23,12 @@ Rails.application.routes.draw do
           get :recent
         end
       end
+
       resources :executive_orders_users, only: [:create, :destroy]
-      resources :representatives_users, only: [:create, :destroy]
+      resources :representatives_users, only: [:create]
+
+      delete "/representatives_users", to: "representatives_users#destroy"
+      # delete "/", to: "representatives_users#destroy"
     end
   end
 end

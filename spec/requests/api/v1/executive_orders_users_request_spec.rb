@@ -26,7 +26,6 @@ RSpec.describe "Executive Orders Users Endpoints" , type: :request do
       )
 
       ExecutiveOrdersUser.create!(user_id: user.id, executive_order_id: executive_order.id)
-      # binding.pry
       delete "/api/v1/executive_orders_users/destroy" 
 
       expect(response).to be_successful
