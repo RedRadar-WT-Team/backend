@@ -1,6 +1,6 @@
 # app/controllers/api/v1/session_controller.rb
 # 
-class Api::V1::SessionController < ApplicationController
+class Api::V1::SessionsController < ApplicationController
 
   def create #log user in by finding user via email and storing email in session
     @user = User.find_by(email: params[:email]) # Look for the user by email

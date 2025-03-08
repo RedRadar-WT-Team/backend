@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::SessionController, type: :controller do
+RSpec.describe Api::V1::SessionsController, type: :controller do
   let(:user) { create(:user, email: 'testuser@example.com', state: 'California', zip: '94101') }
 
   before do
@@ -12,9 +12,9 @@ RSpec.describe Api::V1::SessionController, type: :controller do
   describe 'POST #create' do
     context 'when user exists' do
       it 'logs the user in and returns a success message' do
-        post api_v1_session_path, params: { email: 'testuser@example.com' }, as: :json
-
-        expect(response).to have_http_status(:ok)
+        post '/api/v1/session', params: { email: 'testuser@example.com' }, as: :json
+        binding.pry
+        expect(response).to have_http_status(200)
         expect(JSON.parse(response.body)['message']).to eq('Logged in successfully')
         expect(session[:user_id]).to eq(user.id)
       end
@@ -22,7 +22,7 @@ RSpec.describe Api::V1::SessionController, type: :controller do
 
     context 'when user does not exist' do
       it 'returns an error message' do
-        post api_v1_session_path, params: { email: 'nonexistent@example.com' }, as: :json
+        post '/api/v1/session', params: { email: 'nonexistent@example.com' }, as: :json
 
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)['error']).to eq('User not found')
@@ -36,7 +36,7 @@ RSpec.describe Api::V1::SessionController, type: :controller do
       before { session[:user_id] = user.id }
 
       it 'logs the user out and returns a success message' do
-        delete api_v1_session_path
+        delete '/api/v1/session'
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to eq('Logged out successfully.')
@@ -46,7 +46,7 @@ RSpec.describe Api::V1::SessionController, type: :controller do
 
     context 'when no user is logged in' do
       it 'still returns a success message but does not affect session' do
-        delete api_v1_session_path
+        delete post '/api/v1/session'
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to eq('Logged out successfully.')

@@ -58,7 +58,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe 'PATCH #update' do
     context 'when valid parameters are provided' do
       it 'updates the user successfully' do
-        patch api_v1_user_path(user), params: updated_attributes , as: :json
+        patch "api/v1/users/#{user.id}?email=#{user.email}", params: updated_attributes , as: :json
         user.reload
 
         json_response = JSON.parse(response.body)  
