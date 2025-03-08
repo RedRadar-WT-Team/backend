@@ -2,10 +2,13 @@
 
 Rails.application.routes.draw do
   root 'home#index'
-  # add path to login popup? 
 
   namespace :api do
     namespace :v1 do
+      get '/profile', to: 'users#show', as: 'user_profile'
+      
+      resource :session, only: [:create, :destroy]
+
       resources :users, only: [:index, :show, :create, :update] do
         collection do
           get :by_email
@@ -25,8 +28,7 @@ Rails.application.routes.draw do
       end
 
       resources :executive_orders_users, only: [:create, :destroy]
-      resources :representatives_users, only: [:create]
-
+      resources :representatives_users, only: [:create, :destroy]
       delete "/representatives_users", to: "representatives_users#destroy"
       # delete "/", to: "representatives_users#destroy"
     end
