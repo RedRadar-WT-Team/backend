@@ -17,7 +17,7 @@ RSpec.describe 'edit user request', type: :request do
   end 
 
   it 'updates the user profile successfully' do
-    patch api_v1_user_path(user), params: valid_update, as: :json
+    patch "/api/v1/users/#{user.id}?email=#{user.email}", params: valid_update, as: :json
 
     expect(response).to have_http_status(:ok)
 
@@ -35,20 +35,20 @@ RSpec.describe 'edit user request', type: :request do
 
     # Test missing required fields
     it 'returns an error when fields are missing' do
-      patch api_v1_user_path(user), params: empty_email, as: :json
+      patch "/api/v1/users/#{user.id}?email=#{user.email}", params: empty_email, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
 
       expect(json_response[:error]).to eq("Email can't be blank")
 
-      patch api_v1_user_path(user), params: empty_state, as: :json
+      patch "/api/v1/users/#{user.id}?email=#{user.email}", params: empty_state, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
-
+      
       expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response[:error]).to eq("State can't be blank")
 
-      patch api_v1_user_path(user), params: empty_zip, as: :json
+      patch "/api/v1/users/#{user.id}?email=#{user.email}", params: empty_zip, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
@@ -57,13 +57,13 @@ RSpec.describe 'edit user request', type: :request do
 
     # Test invalid data inputs (email format, zip code)
     it 'returns an error when fields have invalid data' do
-      patch api_v1_user_path(user), params: incorrect_email, as: :json
+      patch "/api/v1/users/#{user.id}?email=#{user.email}", params: incorrect_email, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response[:error]).to eq("Email is not a valid email format")
 
-      patch api_v1_user_path(user), params: { zip: '12' }, as: :json
+      patch "/api/v1/users/#{user.id}?email=#{user.email}", params: { zip: '12' }, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:unprocessable_entity)
@@ -74,7 +74,7 @@ RSpec.describe 'edit user request', type: :request do
     it 'returns an error when email is already taken' do
       user2 = create(:user)
 
-      patch api_v1_user_path(user), params: { email: user2.email }, as: :json
+      patch "/api/v1/users/#{user.id}?email=#{user.email}", params: { email: user2.email }, as: :json
 
       json_response = JSON.parse(response.body, symbolize_names: true)
 
@@ -84,7 +84,7 @@ RSpec.describe 'edit user request', type: :request do
 
     # Test when user is not found
     it 'returns a 404 error when user is not found' do
-      patch api_v1_user_path(user), params: { email: 'randomuser@example.com' }, as: :json
+      patch "/api/v1/users/999999?email=email@email.com", params: { email: 'randomuser@example.com' }, as: :json
       json_response = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(:not_found)
