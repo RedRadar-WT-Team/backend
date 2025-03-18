@@ -13,7 +13,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
     context 'when user exists' do
       it 'logs the user in and returns a success message' do
         post "/api/v1/session/#{user.id}", params: { email: 'testuser@example.com' }, as: :json
-
+        binding.pry
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body)['message']).to eq('Logged in successfully')
         expect(session[:user_id]).to eq(user.id)

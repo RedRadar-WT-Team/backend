@@ -5,5 +5,5 @@ class User < ApplicationRecord
   
   has_many :executive_orders_users
   has_many :executive_orders, through: :executive_orders_users
-  validates :email, uniqueness: true
+  validates :email, presence: true, uniqueness: true
 end
