@@ -1,6 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   before_action :set_user, only: [:update, :show]
 
+  def index
+    @current_user = User.find_by_id(session[:current_user_id])
+  end
+
   def create
     @user = User.new(user_params)
 

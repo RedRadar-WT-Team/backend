@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/profile', to: 'users#show', as: 'user_profile'
-      
 
+      resources :sessions, only: [:create, :destroy]
 
       resources :users, only: [:index, :show, :create, :update] do
         collection do
@@ -26,8 +26,6 @@ Rails.application.routes.draw do
           get :recent
         end
       end
-
-      resource :session, only: [:create, :destroy]
 
       resources :executive_orders_users, only: [:create, :destroy]
       resources :representatives_users, only: [:create, :destroy]

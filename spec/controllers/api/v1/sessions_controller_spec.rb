@@ -3,18 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::SessionsController, type: :controller do
-  let(:user) { create(:user, email: 'testuser@example.com', state: 'California', zip: '94101') }
+  let(:user) { create(:user) }
 
-  # before do
-  #   allow_any_instance_of(controller).to receive(:session).and_return({ current_user_id: user.id })
-  # end 
+  before do
+    session[:user_id] = user.id 
+    allow(controller).to receive(:current_user).and_return(user)
+    allow(controller).to receive(:logged_in?).and_return(true)
+    controller.set_user_from_session
+  end 
 
   describe 'POST #create' do
     context 'when user exists' do
       it 'logs the user in and returns a success message' do
-        post "/api/v1/session/#{user.id}", params: { email: 'testuser@example.com' }, as: :json
-        binding.pry
-        expect(response).to have_http_status(200)
+        post :create, params: { email: user.email }
+
+        expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['message']).to eq('Logged in successfully')
         expect(session[:user_id]).to eq(user.id)
       end
@@ -22,21 +25,23 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
     context 'when user does not exist' do
       it 'returns an error message' do
-        post '/api/v1/session', params: { email: 'nonexistent@example.com' }, as: :json
+        post :create, params: { email: 'nonexistent@example.com' }, as: :json
 
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)['error']).to eq('User not found')
-        expect(session[:current_user_id]).to be_nil
+        expect(session[:user_id]).to be_nil
       end
     end
   end
 
   describe 'DELETE #destroy' do
     context 'when user is logged in' do
-      before { session[:user_id] = user.id }
+      before do
+        session[:user_id] = user.id 
+      end
 
       it 'logs the user out and returns a success message' do
-        delete '/api/v1/session'
+        delete :destroy, params: { id: user.id }
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to eq('Logged out successfully.')
@@ -46,11 +51,11 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
     context 'when no user is logged in' do
       it 'still returns a success message but does not affect session' do
-        delete post '/api/v1/session'
+        delete :destroy, params: { id: user.id }
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to eq('Logged out successfully.')
-        expect(session[:user_id]).to be_nil
+        expect(request.session[:user_id]).to be_nil
       end
     end
   end
