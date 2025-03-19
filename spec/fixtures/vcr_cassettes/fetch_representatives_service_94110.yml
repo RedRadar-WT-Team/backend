@@ -23,65 +23,25 @@ http_interactions:
       Content-Type:
       - application/json
       X-Cloud-Trace-Context:
-      - b5678c224f9733d293797532283b4695
+      - 4585d3f48b519bb1b6c3a529e23cc217
       Date:
-      - Fri, 07 Mar 2025 18:19:56 GMT
+      - Wed, 19 Mar 2025 22:23:39 GMT
       Server:
       - Google Frontend
       Content-Length:
-      - '1214'
+      - '1392'
     body:
       encoding: UTF-8
       string: '{"location":"San Francisco","lowAccuracy":true,"state":"CA","district":"11","representatives":[{"id":"P000197","name":"Nancy
         Pelosi","phone":"202-225-4965","url":"https://pelosi.house.gov","photoURL":"https://images.5calls.org/house/256/P000197.jpg","party":"Democrat","state":"CA","district":"11","reason":"This
         is your representative in the House.","area":"US House","field_offices":[{"phone":"415-556-4862","city":"San
         Francisco"}]},{"id":"S001150","name":"Adam Schiff","phone":"202-224-3841","url":"https://www.schiff.senate.gov","photoURL":"https://images.5calls.org/senate/256/S001150.jpg","party":"Democrat","state":"CA","reason":"This
-        is one of your two Senators.","area":"US Senate","field_offices":[]},{"id":"P000145","name":"Alex
+        is one of your two Senators.","area":"US Senate","field_offices":[{"phone":"310-914-7300","city":"Los
+        Angeles"},{"phone":"415-393-0707","city":"San Francisco"},{"phone":"619-231-9712","city":"San
+        Diego"},{"phone":"559-485-7430","city":"Fresno"}]},{"id":"P000145","name":"Alex
         Padilla","phone":"202-224-3553","url":"https://www.padilla.senate.gov","photoURL":"https://images.5calls.org/senate/256/P000145.jpg","party":"Democrat","state":"CA","reason":"This
         is one of your two Senators.","area":"US Senate","field_offices":[{"phone":"559-497-5109","city":"Fresno"},{"phone":"415-981-9369","city":"San
         Francisco"},{"phone":"916-448-2787","city":"Sacramento"},{"phone":"619-239-3884","city":"San
         Diego"},{"phone":"310-231-4494","city":"Los Angeles"}]}]}'
-  recorded_at: Fri, 07 Mar 2025 18:19:56 GMT
-- request:
-    method: get
-    uri: https://api.5calls.org/v1/representatives?location=94110
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      X-5calls-Token:
-      - "<API_KEY>"
-      User-Agent:
-      - Faraday v2.12.2
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      X-Cloud-Trace-Context:
-      - 991c7d560b998ec8df94793d14e2f297
-      Date:
-      - Fri, 07 Mar 2025 18:19:56 GMT
-      Server:
-      - Google Frontend
-      Content-Length:
-      - '1214'
-    body:
-      encoding: UTF-8
-      string: '{"location":"San Francisco","lowAccuracy":true,"state":"CA","district":"11","representatives":[{"id":"P000197","name":"Nancy
-        Pelosi","phone":"202-225-4965","url":"https://pelosi.house.gov","photoURL":"https://images.5calls.org/house/256/P000197.jpg","party":"Democrat","state":"CA","district":"11","reason":"This
-        is your representative in the House.","area":"US House","field_offices":[{"phone":"415-556-4862","city":"San
-        Francisco"}]},{"id":"S001150","name":"Adam Schiff","phone":"202-224-3841","url":"https://www.schiff.senate.gov","photoURL":"https://images.5calls.org/senate/256/S001150.jpg","party":"Democrat","state":"CA","reason":"This
-        is one of your two Senators.","area":"US Senate","field_offices":[]},{"id":"P000145","name":"Alex
-        Padilla","phone":"202-224-3553","url":"https://www.padilla.senate.gov","photoURL":"https://images.5calls.org/senate/256/P000145.jpg","party":"Democrat","state":"CA","reason":"This
-        is one of your two Senators.","area":"US Senate","field_offices":[{"phone":"559-497-5109","city":"Fresno"},{"phone":"415-981-9369","city":"San
-        Francisco"},{"phone":"916-448-2787","city":"Sacramento"},{"phone":"619-239-3884","city":"San
-        Diego"},{"phone":"310-231-4494","city":"Los Angeles"}]}]}'
-  recorded_at: Fri, 07 Mar 2025 18:19:56 GMT
+  recorded_at: Wed, 19 Mar 2025 22:23:39 GMT
 recorded_with: VCR 6.3.1

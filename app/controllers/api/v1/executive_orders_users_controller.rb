@@ -1,8 +1,9 @@
 class Api::V1::ExecutiveOrdersUsersController < ApplicationController
   def create
+    # binding.pry
     executive_order_number = params[:executive_order_number]
 
-    user = User.find(params[:user_id])
+    user = User.find(session[:user_id])
 
     executive_order = ExecutiveOrder.find_or_create_from_gateway(executive_order_number: executive_order_number)
 
@@ -19,7 +20,8 @@ class Api::V1::ExecutiveOrdersUsersController < ApplicationController
   end
 
   def destroy
-    executive_order_user  = ExecutiveOrdersUser.where(user_id: params[:user_id], executive_order_id: params[:executive_order_id])
+    executive_order_user  = ExecutiveOrdersUser.where(params[:id])
+    # binding.pry 
 
     executive_order_user.delete_all
 

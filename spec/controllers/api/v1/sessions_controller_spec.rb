@@ -3,17 +3,20 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::SessionsController, type: :controller do
-  let(:user) { create(:user, email: 'testuser@example.com', state: 'California', zip: '94101') }
+  before(:each) do
+    @user = User.create!(email: 'testuser@example.com', state: 'California', zip: '94101') 
+  end
 
   describe 'POST #create' do
     context 'when user exists' do
       it 'logs the user in and returns a success message' do
-        session[:user_id] = user.id
+        # session[:user_id] = user.id
         post :create, params: { email: 'testuser@example.com' }
-
+        
+        # binding.pry
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body)['message']).to eq('Logged in successfully')
-        expect(session[:user_id]).to eq(user.id)
+        expect(session[:user_id]).to eq(@user.id)
       end
     end
 
@@ -23,7 +26,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
         expect(response).to have_http_status(:not_found)
         expect(JSON.parse(response.body)['error']).to eq('User not found')
-        expect(session[:current_user_id]).to be_nil
+        expect(session[:user_id]).to be_nil
       end
     end
   end
@@ -31,7 +34,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
   describe 'DELETE #destroy' do
     context 'when user is logged in' do
       it 'logs the user out and returns a success message' do
-        session[:user_id] = user.id
+        # session[:user_id] = user.id
 
         delete :destroy
 
