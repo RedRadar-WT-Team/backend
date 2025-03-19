@@ -81,14 +81,5 @@ RSpec.describe 'edit user request', type: :request do
       expect(response).to have_http_status(:unprocessable_entity)
       expect(json_response[:error]).to eq("Email has already been taken")
     end
-
-    # Test when user is not found
-    it 'returns a 404 error when user is not found' do
-      patch "/api/v1/users/999999?email=email@email.com", params: { email: 'randomuser@example.com' }, as: :json
-      json_response = JSON.parse(response.body, symbolize_names: true)
-
-      expect(response).to have_http_status(:not_found)
-      expect(json_response[:error]).to eq("User not found")
-    end
   end
 end

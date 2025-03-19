@@ -20,6 +20,9 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
+    if @user.nil? 
+      render json: { error: 'User not found' }, status: :not_found
+    end
     if @user.update(user_params)
       render json: { message: 'Account updated successfully!', data: @user }, status: :ok
     else
