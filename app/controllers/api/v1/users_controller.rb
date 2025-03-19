@@ -15,7 +15,7 @@ class Api::V1::UsersController < ApplicationController
     if @user
       render json: UserSerializer.new(@user)
     else
-      render json: { error: 'User not found' }, status: :not_found
+      render json: { error: 'Please log in first.' }, status: :not_found
     end
   end
 
@@ -30,7 +30,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def set_user
-    @user = User.find_by(email: params[:email])
+    @user = User.find_by(id: session[:user_id])
 
     if @user.nil?
       render json: { error: 'User not found' }, status: :not_found
