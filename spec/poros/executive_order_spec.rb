@@ -1,6 +1,7 @@
+# bundle exec rspec spec/poros/executive_order_spec.rb
 require "rails_helper"
  
-RSpec.describe ExecutiveOrder do
+RSpec.describe ExecutiveOrderPoro do
   it "should create an Executive Order from JSON data" do
     
     sample_json = {
@@ -12,8 +13,9 @@ RSpec.describe ExecutiveOrder do
           "publication_date": "2025-02-20"
     }
 
-    zoo_executive_order = ExecutiveOrder.new(sample_json)
-    expect(zoo_executive_order).to be_an_instance_of ExecutiveOrder
+    zoo_executive_order = ExecutiveOrderPoro.new(sample_json)
+
+    expect(zoo_executive_order).to be_an_instance_of ExecutiveOrderPoro
     expect(zoo_executive_order.id).to eq("2025-04444")
     expect(zoo_executive_order.title).to eq("Zoo Dress Code")
     expect(zoo_executive_order.document_number).to eq("2025-04444")

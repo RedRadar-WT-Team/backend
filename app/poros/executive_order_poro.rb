@@ -1,5 +1,5 @@
 class ExecutiveOrderPoro
-  attr_reader :id, :title, :html_url, :document_number, :pdf_url, :publication_date
+  attr_reader :id, :title, :document_number, :html_url, :pdf_url, :publication_date
 
   def initialize(order_data)
     @id               = order_data[:document_number] 
