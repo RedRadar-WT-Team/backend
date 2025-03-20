@@ -31,7 +31,6 @@ Rails.application.routes.draw do
       resources :representatives_users, only: [:index, :create, :destroy]
       delete "/representatives_users", to: "representatives_users#destroy"
       # delete "/", to: "representatives_users#destroy"
-      
     end
   end
 end
