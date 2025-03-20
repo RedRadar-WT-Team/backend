@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/profile', to: 'users#show', as: 'user_profile'
-      
-
 
       resources :users, only: [:index, :show, :create, :update] do
         collection do
@@ -29,8 +27,8 @@ Rails.application.routes.draw do
 
       resource :session, only: [:create, :destroy]
 
-      resources :executive_orders_users, only: [:create, :destroy]
-      resources :representatives_users, only: [:create, :destroy]
+      resources :executive_orders_users, only: [:index, :create, :destroy]
+      resources :representatives_users, only: [:index, :create, :destroy]
       delete "/representatives_users", to: "representatives_users#destroy"
       # delete "/", to: "representatives_users#destroy"
       
