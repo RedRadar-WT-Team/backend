@@ -1,6 +1,6 @@
 class Api::V1::RepresentativesUsersController < ApplicationController
   # before_action :set_gateway
-  before_action :authenticate_user!
+  before_action :authenticate_user! #helper method set up in application controller
   
   def index
     user_representatives = RepresentativesUser.where(user_id: params[:user_id])
