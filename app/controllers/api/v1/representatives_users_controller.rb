@@ -1,10 +1,19 @@
 class Api::V1::RepresentativesUsersController < ApplicationController
   # before_action :set_gateway
+  before_action :authenticate_user!
+  
+  def index
+    user_representatives = RepresentativesUser.where(user_id: params[:user_id])
+                                              .includes(:representative)
+                                              .map { |rep_user| rep_user.representative }
+
+    render json: user_representatives, status: :ok
+  end
 
   def create
     allowed = api_params()
 
-    query = allowed[:query]
+    # query = allowed[:query]
     representative_id = allowed[:id]
     user_id = allowed[:user_id]
 
