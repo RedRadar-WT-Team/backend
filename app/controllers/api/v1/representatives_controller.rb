@@ -12,24 +12,33 @@ class Api::V1::RepresentativesController < ApplicationController
   end
 
   def show
-    allowed = api_params()
+    representative_id = params[:id] # Get representative_id from the URL
+    @representative = RepresentativeGateway.fetch_by_representative_id(representative_id)
 
-    if allowed[:db].present? && allowed[:db] == "true"
-      representative = Representative.find_by(id: allowed[:id])
-      
-      if representative
-        render json: RepresentativeSerializer.new(representative)
-      else
-        render json: { error: "Representative not found" }, status: :not_found
-      end
-    elsif allowed[:db].present? && allowed[:db] == "false"
-      representatives = RepresentativeGateway.fetch_queried_reps(allowed[:query])
-      representative = RepresentativePoro.find_by_id(allowed[:id], representatives)
-      render json: RepresentativeApiSerializer.new(representative)
-
+    # Check if we received an error from the API
+    if @representative.is_a?(Hash) && @representative[:error]
+      render json: @representative, status: :not_found
     else
-      render json: {error: "404 Not Found"}, status: :not_found
+      render json: @representative
     end
+    # allowed = api_params()
+
+    # if allowed[:db].present? && allowed[:db] == "true"
+    #   representative = Representative.find_by(id: allowed[:id])
+      
+    #   if representative
+    #     render json: RepresentativeSerializer.new(representative)
+    #   else
+    #     render json: { error: "Representative not found" }, status: :not_found
+    #   end
+    # elsif allowed[:db].present? && allowed[:db] == "false"
+    #   representatives = RepresentativeGateway.fetch_queried_reps(allowed[:query])
+    #   representative = RepresentativePoro.find_by_id(allowed[:id], representatives)
+    #   render json: RepresentativeApiSerializer.new(representative)
+
+    # else
+    #   render json: {error: "404 Not Found"}, status: :not_found
+    # end
   end
 
   def create

@@ -17,9 +17,15 @@ class ApplicationController < ActionController::Base
     @_current_user = nil # Clear the cached current user
   end
 
-  def authenticate_user! # helper method to protect certain app actions
-    unless logged_in?
-      render json: { error: 'Please log in first.' }, status: :unauthorized
-    end
-  end
+  # def authenticate_user! # helper method to protect certain app actions
+  #   unless logged_in?
+  #     logger.debug "User not logged in. Redirecting to login..."
+  #     render json: { error: 'Please log in first.' }, status: :unauthorized
+  #   else
+  #     logger.debug "User logged in: #{current_user.email}"
+  #   end
+  #   # unless logged_in?
+  #   #   render json: { error: 'Please log in first.' }, status: :unauthorized
+  #   # end
+  # end
 end

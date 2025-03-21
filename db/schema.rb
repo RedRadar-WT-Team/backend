@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_20_185056) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "executive_orders", force: :cascade do |t|
     t.string "title"
@@ -28,7 +30,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
     t.index ["user_id", "executive_order_id"], name: "index_executive_orders_users_on_user_id_and_executive_order_id", unique: true
   end
 
-  create_table "representatives", force: :cascade do |t|
+  create_table "representatives", id: false, force: :cascade do |t|
     t.string "name"
     t.string "phone"
     t.string "photo_url"
@@ -39,11 +41,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
     t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "representative_id"
   end
 
   create_table "representatives_users", id: false, force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "representative_id", null: false
+    t.string "representative_id", null: false
     t.index ["representative_id", "user_id"], name: "index_representatives_users_on_representative_id_and_user_id"
     t.index ["user_id", "representative_id"], name: "index_representatives_users_on_user_id_and_representative_id", unique: true
   end
