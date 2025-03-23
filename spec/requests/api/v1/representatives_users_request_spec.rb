@@ -16,7 +16,6 @@ RSpec.describe "Representative Users Endpoints" , type: :request do
       expect(response.status).to eq(201)
 
       results = JSON.parse(response.body, symbolize_names: true)[:representative]
-      binding.pry
 
       expect(Representative.count).to eq(1) 
       representative = Representative.first
