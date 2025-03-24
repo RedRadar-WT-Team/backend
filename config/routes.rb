@@ -21,11 +21,8 @@ Rails.application.routes.draw do
       resource :session, only: [:create, :destroy]
       resource :users, only: [:create, :update, :show] 
 
-      resources :executive_orders_users, only: [:create, :destroy]
-      resource :representatives_users, only: [:create, :destroy]
-      # delete "/representatives_users", to: "representatives_users#destroy"
-      # delete "/", to: "representatives_users#destroy"
-      
+      resources :executive_orders_users, only: [:index, :create, :destroy]
+      resource :representatives_users, only: [:create, :destroy] 
     end
   end
 end
