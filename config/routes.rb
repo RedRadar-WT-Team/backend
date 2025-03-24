@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       resource :users, only: [:create, :update, :show] 
 
       resources :executive_orders_users, only: [:index, :create, :destroy]
-      resource :representatives_users, only: [:create, :destroy] 
+      resource :representatives_users, only: [:index, :create, :destroy] 
     end
   end
 end

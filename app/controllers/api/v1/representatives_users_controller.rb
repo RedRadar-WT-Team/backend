@@ -1,6 +1,20 @@
 class Api::V1::RepresentativesUsersController < ApplicationController
   # before_action :set_gateway
 
+  def index
+    begin 
+      user_id = params[:user_id]
+      user = User.find(user_id)
+
+      representatives = user.representatives 
+
+      render json: RepresentativeSerializer.new(representatives) 
+      
+    rescue => e 
+      { error: e.message }, status: 500
+    end
+  end
+
   def create
     allowed = api_params()
 
