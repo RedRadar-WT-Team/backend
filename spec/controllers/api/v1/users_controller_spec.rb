@@ -36,7 +36,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         user = create(:user)
         session[:user_id] = user.id
 
-        get :show, params: { id: user.id }
+        get :show
 
         json_response = JSON.parse(response.body, symbolize_names: true)
         expect(response).to have_http_status(:ok)

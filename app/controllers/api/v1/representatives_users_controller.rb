@@ -35,7 +35,6 @@ class Api::V1::RepresentativesUsersController < ApplicationController
   def destroy
     # representatives_user = RepresentativesUser.find(params[:id])
     rep_user = RepresentativesUser.find_by(user_id: params[:user_id], representative_id: params[:representative_id])
-    binding.pry
     
     if rep_user
       rep_user.delete

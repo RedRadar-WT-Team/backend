@@ -22,11 +22,13 @@ RSpec.describe "Executive Orders Users Endpoints" , type: :request do
 
     it "can unsave an executive order from the joins table of users and executive orders" do
       EOUser = ExecutiveOrdersUser.create!(user_id: @user.id, executive_order_id: @executive_order.id)
-
+  
       delete "/api/v1/executive_orders_users/#{EOUser.id}" 
+      results = JSON.parse(response.body, symbolize_names: true)
 
+      
       expect(response).to be_successful
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(200)
     end
   end
 end
