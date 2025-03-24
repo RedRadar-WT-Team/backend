@@ -11,7 +11,7 @@ class Api::V1::RepresentativesUsersController < ApplicationController
       render json: RepresentativeSerializer.new(representatives) 
       
     rescue => e 
-      { error: e.message }, status: 500
+      render json: { error: e.message }, status: 500
     end
   end
 
