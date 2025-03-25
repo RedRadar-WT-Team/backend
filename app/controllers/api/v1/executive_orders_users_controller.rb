@@ -5,7 +5,6 @@ class Api::V1::ExecutiveOrdersUsersController < ApplicationController
     user = User.find(session[:user_id])
     executive_order = ExecutiveOrder.find_or_create_from_gateway(executive_order_number: executive_order_number)
     
-    binding.pry
     executive_order_user = ExecutiveOrdersUser.create!(user: user, executive_order: executive_order)
 
     render json: executive_order_user, status: :created
