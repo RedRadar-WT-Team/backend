@@ -53,6 +53,9 @@ gem "faraday"
 # Add JSON api serializer
 gem "jsonapi-serializer"
 
+# PDF processing
+gem 'pdf-reader'
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
@@ -86,4 +89,3 @@ group :test do
 end
 
 gem 'simplecov', require: false, group: :test
-
