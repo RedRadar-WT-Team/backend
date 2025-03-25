@@ -10,4 +10,4 @@ class RepresentativeSerializer
               :district, 
               :area, 
               :reason
-end 
+end

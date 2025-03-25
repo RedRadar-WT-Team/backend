@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_19_232041) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "executive_orders", force: :cascade do |t|
     t.string "title"
@@ -21,11 +23,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "executive_orders_users", id: false, force: :cascade do |t|
+  create_table "executive_orders_users", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "executive_order_id", null: false
-    t.index ["executive_order_id", "user_id"], name: "index_executive_orders_users_on_executive_order_id_and_user_id"
-    t.index ["user_id", "executive_order_id"], name: "index_executive_orders_users_on_user_id_and_executive_order_id", unique: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["executive_order_id"], name: "index_executive_orders_users_on_executive_order_id"
+    t.index ["user_id"], name: "index_executive_orders_users_on_user_id"
   end
 
   create_table "representatives", force: :cascade do |t|
@@ -41,11 +45,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "representatives_users", id: false, force: :cascade do |t|
+  create_table "representatives_users", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "representative_id", null: false
-    t.index ["representative_id", "user_id"], name: "index_representatives_users_on_representative_id_and_user_id"
-    t.index ["user_id", "representative_id"], name: "index_representatives_users_on_user_id_and_representative_id", unique: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["representative_id"], name: "index_representatives_users_on_representative_id"
+    t.index ["user_id"], name: "index_representatives_users_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,4 +62,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_05_013309) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "executive_orders_users", "executive_orders"
+  add_foreign_key "executive_orders_users", "users"
+  add_foreign_key "representatives_users", "representatives"
+  add_foreign_key "representatives_users", "users"
 end

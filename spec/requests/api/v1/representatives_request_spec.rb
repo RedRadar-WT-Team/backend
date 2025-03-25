@@ -173,31 +173,5 @@ RSpec.describe "representative endpoints", type: :request do
       
       expect(json[:error]).to eq("Representative not found")
     end
-
-    it "can create a new representative to the db" do
-      rep_params = {
-        name: "Jamie Raskin",
-        phone: "202-225-5341",
-        photo_url: "https://images.5calls.org/house/256/R000606.jpg",
-        party: "Democrat",
-        state: "MD",
-        district: "8",
-        area: "US House",
-        reason: "This is your representative in the House."
-      }
-
-      post "/api/v1/representatives", params: { representative: rep_params }
-
-      expect(response).to have_http_status(:created)
-
-      json = JSON.parse(response.body, symbolize_names: true)
-      expect(json[:data][:attributes][:name]).to eq("Jamie Raskin")
-      expect(json[:data][:attributes][:phone]).to eq("202-225-5341")
-      expect(json[:data][:attributes][:party]).to eq("Democrat")
-      expect(json[:data][:attributes][:state]).to eq("MD")
-      expect(json[:data][:attributes][:district]).to eq("8")
-      expect(json[:data][:attributes][:area]).to eq("US House")
-      expect(json[:data][:attributes][:reason]).to eq("This is your representative in the House.")
-    end
   end
 end

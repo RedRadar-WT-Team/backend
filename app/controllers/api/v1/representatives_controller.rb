@@ -32,23 +32,9 @@ class Api::V1::RepresentativesController < ApplicationController
     end
   end
 
-  def create
-    representative = Representative.new(representative_params)
-   
-    if representative.save
-      render json: RepresentativeSerializer.new(representative), status: :created
-    else
-      render json: { errors: representative.errors[:name].first }, status: :unprocessable_entity
-    end
-  end
-
   private
 
   def api_params
     params.permit(:db, :query, :id)
-  end
-
-  def representative_params
-    params.require(:representative).permit(:name, :phone, :photo_url, :party, :state, :district, :area, :reason)
   end
 end
