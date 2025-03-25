@@ -14,5 +14,11 @@ class ExecutiveOrder < ApplicationRecord
     found_executive_order = ExecutiveOrderDetailGateway.find_specific_eo(executive_order_number)
     executive_order = ExecutiveOrder.create!(found_executive_order)
   end
-end
 
+  def generate_and_save_summary(text)
+    return if summary.present?
+    
+    generated_summary = OpenaiService.generate_summary(text)
+    update(summary: generated_summary) if generated_summary.present?
+  end
+end
