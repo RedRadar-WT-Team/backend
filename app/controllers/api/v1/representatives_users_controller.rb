@@ -20,30 +20,36 @@ class Api::V1::RepresentativesUsersController < ApplicationController
 
     representatives = FetchRepresentativesService.call(allowed[:query])
 
+    user = User.find(session[:user_id])
+
     selected_representative = RepresentativePoro.find_by_id(allowed[:id], representatives)
 
-    representative = Representative.find_or_create_by(
+    representative = Representative.find_or_create_by!(
       name: selected_representative.name,
       state: selected_representative.state,
-    ) do |rep|
-      rep.phone = selected_representative.phone
-      rep.photo_url = selected_representative.photo_url
-      rep.party = selected_representative.party
-      rep.district = selected_representative.district
-      rep.area = selected_representative.area
-      rep.reason = selected_representative.reason
-    end
+      ) do |rep|
+        rep.phone = selected_representative.phone
+        rep.photo_url = selected_representative.photo_url
+        rep.party = selected_representative.party
+        rep.district = selected_representative.district
+        rep.area = selected_representative.area
+        rep.reason = selected_representative.reason
+      end
+      
+      existing_association = RepresentativesUser.find_by(
+        user: user, 
+        representative: representative 
+        )
+        
+        if existing_association
+          render json: { message: "Representative already saved." }, status: :ok
+          return
+        end
+        
+        representative_user = RepresentativesUser.create!(user: user, representative: representative)
+        binding.pry   
 
-    representatives_user = RepresentativesUser.find_or_initialize_by(
-      user_id: session[:user_id], 
-      representative_id: representative.id
-    )
-
-    if representatives_user.save 
-      render json: RepresentativeUserSerializer.new(representatives_user, include: [:user, :representative]), status: :created
-    else
-      head 500
-    end
+    render json: { message: "Successfully saved." }, status: :created
   end
 
   def destroy
