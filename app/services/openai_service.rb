@@ -30,7 +30,7 @@ class OpenaiService
   def self.hit_endpoint(endpoint, payload)
     response = connect.post(endpoint) do |req|
       req.headers['Content-Type'] = 'application/json'
-      req.headers['Authorization'] = "Bearer #{ENV['OPENAI_API_KEY']}"
+      req.headers['Authorization'] = "Bearer #{Rails.application.credentials.dig(:open_ai, :key)}"
       req.body = payload.to_json
     end
     parse_data(response)
