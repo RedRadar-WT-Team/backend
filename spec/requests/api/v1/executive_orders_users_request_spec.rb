@@ -10,7 +10,8 @@ RSpec.describe "Executive Orders Users Endpoints" , type: :request do
         title: "We own Greenland",
         html_url: "https://i.imgflip.com/384b70.jpg",
         executive_order_number: "2025-03289",
-        publication_date: "March 5, 2025"
+        publication_date: "March 5, 2025",
+        pdf_url: "https://www.google.com/imgres?q=greenland%20open%20source&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Ff%2Ff9%2FGreenland-ice_sheet_hg.jpg&imgrefurl=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AGreenland-ice_sheet_hg.jpg&docid=e11FvoTbFIavvM&tbnid=yQl3fsOLIl9eoM&vet=12ahUKEwjF_PSw4aaMAxX3MkQIHWuZHRcQM3oECGgQAA..i&w=5209&h=3547&hcb=2&ved=2ahUKEwjF_PSw4aaMAxX3MkQIHWuZHRcQM3oECGgQAA"
       )
     end
 
