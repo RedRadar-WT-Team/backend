@@ -2,6 +2,8 @@ class OpenaiService
   def self.generate_summary(text)
     return nil if text.blank?
 
+    Rails.logger.info("Generating summary for text of length: #{text.length}")
+
     prompt = eo_summary_prompt(text)
     response = hit_endpoint("v1/chat/completions", {
       model: "gpt-3.5-turbo",
@@ -13,8 +15,10 @@ class OpenaiService
       max_tokens: 300
     })
 
-    if response[:status] == 200
-      response.dig(:choices, 0, :message, :content)
+    Rails.logger.info("OpenAI Response: #{response.inspect}")
+
+    if response && response[:choices] && response[:choices][0] && response[:choices][0][:message]
+      response[:choices][0][:message][:content].to_s
     end
   rescue => e
     Rails.logger.error("OpenAI API error: #{e.message}")
@@ -43,7 +47,7 @@ class OpenaiService
   def self.connect
     Faraday.new(url: "https://api.openai.com") do |f|
       f.request :json
-      f.response :json
+      # f.response :json
       f.adapter Faraday.default_adapter
     end
   end
