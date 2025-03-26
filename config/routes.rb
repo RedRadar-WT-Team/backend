@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       resource :session, only: [:create, :destroy]
       resource :users, only: [:create, :update, :show] 
 
-      resources :executive_orders_users, only: [:index, :create, :destroy]
+      resource :executive_orders_users, only: [:index, :create, :destroy]
       resource :representatives_users, only: [:index, :create, :destroy] 
     end
   end
