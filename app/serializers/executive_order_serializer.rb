@@ -6,7 +6,8 @@ class ExecutiveOrderSerializer
              :document_number,
              :html_url,
              :pdf_url,
-             :publication_date 
+             :publication_date,
+             :summary 
 end
 
 
