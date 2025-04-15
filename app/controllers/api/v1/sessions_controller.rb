@@ -9,7 +9,7 @@ class Api::V1::SessionsController < ApplicationController
       # Store the user's email in the session
       session[:user_id] = @user.id
       
-      render json: { message: 'Logged in successfully' }, status: :ok  # Return JSON response to frontend
+      render json: { message: 'Logged in successfully', user_id: session[:user_id] }, status: :ok  # Return JSON response to frontend
     else
       # If user is not found, show an error
       render json: { error: 'User not found' }, status: :not_found
