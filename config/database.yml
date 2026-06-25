@@ -22,6 +22,4 @@ test:
 
 production:
   <<: *default
-  database: rep_radar_production
-  username: rep_radar
-  password: <%= ENV["REP_RADAR_API_DATABASE_PASSWORD"] %>
+  url: <%= ENV.fetch("DATABASE_URL") %>
