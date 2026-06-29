@@ -18,7 +18,7 @@ class RepresentativeGateway
 
   def self.connect
     conn = Faraday.new(url: "https://api.5calls.org") do |faraday|
-      faraday.headers["X-5Calls-Token"] = Rails.application.credentials.fiveCalls[:key]
+      faraday.headers["X-5Calls-Token"] = ENV.fetch("FIVE_CALLS_API_KEY")
     end
 
     return conn
